@@ -531,65 +531,733 @@ header{background:var(--ink);color:#fff;padding:0 48px;position:sticky;top:0;z-i
   <div class="attr-hero">
     <div class="attr-inner">
       <div>
-        <div style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--bain-red);margin-bottom:16px;">Omni-channel Attribution</div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--bain-red);margin-bottom:16px;">Technical Deep-Dive · Omni-channel Attribution</div>
         <h1 style="font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,48px);font-weight:700;line-height:1.15;color:#fff;margin-bottom:16px;">Attribution Without <em style="color:var(--bain-red)">Blind Spots</em></h1>
-        <p style="font-size:15px;font-weight:300;color:rgba(255,255,255,.6);line-height:1.8;max-width:480px;">A Looker-powered attribution model that stitches Customer ID across every online and offline touchpoint — replacing last-click with a full-journey, privacy-compliant view of what drives conversions.</p>
+        <p style="font-size:15px;font-weight:300;color:rgba(255,255,255,.6);line-height:1.8;max-width:480px;">Full technical architecture for stitching Customer ID across every online and offline touchpoint — from raw signal ingestion through Shapley computation in BigQuery ML to Looker LookML exposure.</p>
         <div class="attr-stat-row">
           <div><div class="attr-stat-n">360°</div><div class="attr-stat-l">Customer view</div></div>
+          <div><div class="attr-stat-n">T+1</div><div class="attr-stat-l">Daily refresh</div></div>
           <div><div class="attr-stat-n">0</div><div class="attr-stat-l">Cookie deps</div></div>
-          <div><div class="attr-stat-n">1</div><div class="attr-stat-l">Source of truth</div></div>
         </div>
       </div>
       <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:28px;">
-        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--bain-red);margin-bottom:12px;">Looker · BigQuery Native</div>
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          <div style="display:flex;justify-content:space-between;font-size:12px;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:8px;"><span style="color:rgba(255,255,255,.5);">Attribution Model</span><span style="color:#fff;font-weight:600;">Data-Driven (Shapley)</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:12px;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:8px;"><span style="color:rgba(255,255,255,.5);">Identity Thread</span><span style="color:#fff;font-weight:600;">Customer ID</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:12px;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:8px;"><span style="color:rgba(255,255,255,.5);">Lookback Window</span><span style="color:#fff;font-weight:600;">90-day rolling</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:12px;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:8px;"><span style="color:rgba(255,255,255,.5);">Offline Channels</span><span style="color:#fff;font-weight:600;">Store, Call, Direct Mail</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:12px;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:8px;"><span style="color:rgba(255,255,255,.5);">Refresh Cadence</span><span style="color:#fff;font-weight:600;">Daily (T+1)</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:rgba(255,255,255,.5);">Econometrics Feed</span><span style="color:#34A853;font-weight:600;">✓ Integrated</span></div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--bain-red);margin-bottom:16px;">Technical Spec · Looker + BigQuery</div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <div style="display:flex;justify-content:space-between;font-size:12px;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:8px;"><span style="color:rgba(255,255,255,.5);">Attribution Model</span><span style="color:#fff;font-weight:600;font-family:'JetBrains Mono',monospace;font-size:11px;">Shapley (BQML Stored Proc)</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:8px;"><span style="color:rgba(255,255,255,.5);">Identity Key</span><span style="color:#fff;font-weight:600;font-family:'JetBrains Mono',monospace;font-size:11px;">customer_id (EEID)</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:8px;"><span style="color:rgba(255,255,255,.5);">Lookback Window</span><span style="color:#fff;font-weight:600;font-family:'JetBrains Mono',monospace;font-size:11px;">90d rolling</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:8px;"><span style="color:rgba(255,255,255,.5);">BQ Output Table</span><span style="color:#fff;font-weight:600;font-family:'JetBrains Mono',monospace;font-size:11px;">attribution_results_v2</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:8px;"><span style="color:rgba(255,255,255,.5);">Refresh Trigger</span><span style="color:#fff;font-weight:600;font-family:'JetBrains Mono',monospace;font-size:11px;">Cloud Scheduler → Dataflow</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:8px;"><span style="color:rgba(255,255,255,.5);">Looker Connection</span><span style="color:#fff;font-weight:600;font-family:'JetBrains Mono',monospace;font-size:11px;">BigQuery SA (read-only)</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:rgba(255,255,255,.5);">Econ Feed</span><span style="color:#34A853;font-weight:600;font-family:'JetBrains Mono',monospace;font-size:11px;">✓ mmm_base_daily</span></div>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- ATTRIBUTION PIPELINE DIAGRAM -->
+  <div style="background:#0D1420;padding:48px;">
+    <div style="max-width:1200px;margin:0 auto;">
+      <div style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--bain-red);margin-bottom:24px;text-align:center;">End-to-End Attribution Data Pipeline</div>
+      <svg viewBox="0 0 1060 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" font-family="'Source Sans 3',sans-serif">
+        <defs>
+          <marker id="pa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#CC0000"/></marker>
+          <marker id="pg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#34A853"/></marker>
+        </defs>
+        <rect width="1060" height="260" fill="#0D1420"/>
+        <!-- STAGE BOXES -->
+        <!-- 1: Signal Sources -->
+        <rect x="10" y="30" width="140" height="200" rx="4" fill="#0F1C2E" stroke="#1A73E8" stroke-width="1.5"/>
+        <rect x="10" y="30" width="140" height="24" rx="4" fill="#1A73E8"/>
+        <text x="80" y="46" fill="#fff" font-size="9" font-weight="700" text-anchor="middle" letter-spacing="1">SIGNAL SOURCES</text>
+        <text x="80" y="76" fill="rgba(255,255,255,.65)" font-size="9" text-anchor="middle">GA4 + Customer ID</text>
+        <text x="80" y="94" fill="rgba(255,255,255,.65)" font-size="9" text-anchor="middle">Firebase In-App Events</text>
+        <text x="80" y="112" fill="rgba(255,255,255,.65)" font-size="9" text-anchor="middle">MMP S2S Postbacks</text>
+        <text x="80" y="130" fill="rgba(255,255,255,.65)" font-size="9" text-anchor="middle">Meta CAPI (server)</text>
+        <text x="80" y="148" fill="rgba(255,255,255,.65)" font-size="9" text-anchor="middle">Google CAPI (server)</text>
+        <text x="80" y="166" fill="rgba(255,255,255,.65)" font-size="9" text-anchor="middle">Offline POS / CSV</text>
+        <text x="80" y="184" fill="rgba(255,255,255,.65)" font-size="9" text-anchor="middle">TV / OOH (Econ)</text>
+        <text x="80" y="202" fill="rgba(255,255,255,.65)" font-size="9" text-anchor="middle">Call Centre logs</text>
+        <!-- Arrow 1→2 -->
+        <line x1="150" y1="130" x2="175" y2="130" stroke="#CC0000" stroke-width="2" marker-end="url(#pa)"/>
+        <text x="162" y="124" fill="rgba(255,255,255,.4)" font-size="8" text-anchor="middle">GCS</text>
+
+        <!-- 2: Identity Resolution -->
+        <rect x="178" y="50" width="145" height="160" rx="4" fill="#0F1C2E" stroke="#7C4DFF" stroke-width="1.5"/>
+        <rect x="178" y="50" width="145" height="24" rx="4" fill="#7C4DFF"/>
+        <text x="250" y="66" fill="#fff" font-size="9" font-weight="700" text-anchor="middle" letter-spacing="1">IDENTITY RESOLUTION</text>
+        <text x="250" y="95" fill="#B39DFF" font-size="9" font-weight="600" text-anchor="middle">Deterministic Match</text>
+        <text x="250" y="111" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">customer_id exact join</text>
+        <text x="250" y="127" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">email SHA-256 match</text>
+        <text x="250" y="147" fill="#B39DFF" font-size="9" font-weight="600" text-anchor="middle">Probabilistic Match</text>
+        <text x="250" y="163" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">Device graph linkage</text>
+        <text x="250" y="179" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">IP + browser signals</text>
+        <text x="250" y="199" fill="#7C4DFF" font-size="9" font-weight="700" text-anchor="middle">→ unified_profile_id</text>
+        <!-- Arrow 2→3 -->
+        <line x1="323" y1="130" x2="348" y2="130" stroke="#CC0000" stroke-width="2" marker-end="url(#pa)"/>
+        <text x="335" y="124" fill="rgba(255,255,255,.4)" font-size="8" text-anchor="middle">BQ</text>
+
+        <!-- 3: Touchpoint Assembly -->
+        <rect x="350" y="50" width="145" height="160" rx="4" fill="#0F1C2E" stroke="#FBBC04" stroke-width="1.5"/>
+        <rect x="350" y="50" width="145" height="24" rx="4" fill="#FBBC04"/>
+        <text x="422" y="66" fill="#000" font-size="9" font-weight="700" text-anchor="middle" letter-spacing="1">TOUCHPOINT TABLE</text>
+        <text x="422" y="95" fill="rgba(255,255,255,.7)" font-size="8" text-anchor="middle" font-family="'JetBrains Mono',monospace">customer_touchpoints</text>
+        <text x="422" y="114" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">unified_profile_id</text>
+        <text x="422" y="130" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">session_timestamp</text>
+        <text x="422" y="146" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">channel · campaign</text>
+        <text x="422" y="162" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">conversion_flag</text>
+        <text x="422" y="178" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">revenue_value</text>
+        <text x="422" y="198" fill="#FBBC04" font-size="8" font-weight="700" text-anchor="middle">CMP consent_flag = 1</text>
+        <!-- Arrow 3→4 -->
+        <line x1="495" y1="130" x2="520" y2="130" stroke="#CC0000" stroke-width="2" marker-end="url(#pa)"/>
+        <text x="507" y="124" fill="rgba(255,255,255,.4)" font-size="8" text-anchor="middle">SP</text>
+
+        <!-- 4: Shapley Model -->
+        <rect x="522" y="30" width="155" height="200" rx="4" fill="#0D1F3C" stroke="#CC0000" stroke-width="2"/>
+        <rect x="522" y="30" width="155" height="24" rx="4" fill="#CC0000"/>
+        <text x="599" y="46" fill="#fff" font-size="9" font-weight="700" text-anchor="middle" letter-spacing="1">SHAPLEY MODEL · BQML</text>
+        <text x="599" y="68" fill="#FF8080" font-size="8" font-weight="600" text-anchor="middle">CALL shapley_attribution()</text>
+        <text x="599" y="86" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">1. Build journey arrays</text>
+        <text x="599" y="102" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">   per converting user</text>
+        <text x="599" y="118" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">2. Enumerate 2ⁿ subsets</text>
+        <text x="599" y="134" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">   (n = unique channels)</text>
+        <text x="599" y="150" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">3. Compute marginal</text>
+        <text x="599" y="166" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">   contribution per channel</text>
+        <text x="599" y="182" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">4. Average across all</text>
+        <text x="599" y="198" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">   permutations</text>
+        <text x="599" y="218" fill="#FF6060" font-size="8" font-weight="700" text-anchor="middle">→ attribution_results_v2</text>
+        <!-- Arrow 4→5 -->
+        <line x1="677" y1="130" x2="702" y2="130" stroke="#34A853" stroke-width="2" marker-end="url(#pg)"/>
+        <text x="689" y="124" fill="rgba(255,255,255,.4)" font-size="8" text-anchor="middle">PDT</text>
+
+        <!-- 5: Looker -->
+        <rect x="704" y="50" width="145" height="160" rx="4" fill="#0F1C2E" stroke="#34A853" stroke-width="1.5"/>
+        <rect x="704" y="50" width="145" height="24" rx="4" fill="#34A853"/>
+        <text x="776" y="66" fill="#fff" font-size="9" font-weight="700" text-anchor="middle" letter-spacing="1">LOOKER · LOOKML</text>
+        <text x="776" y="91" fill="#80D0A0" font-size="8" font-weight="600" text-anchor="middle">explore: attribution_model</text>
+        <text x="776" y="109" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">dimension: channel</text>
+        <text x="776" y="125" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">dimension: campaign</text>
+        <text x="776" y="141" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">measure: shapley_credit</text>
+        <text x="776" y="157" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">measure: attributed_rev</text>
+        <text x="776" y="173" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">measure: marginal_roas</text>
+        <text x="776" y="197" fill="#80D0A0" font-size="8" font-weight="700" text-anchor="middle">PDT refresh T+1 daily</text>
+        <!-- Arrow 5→6 -->
+        <line x1="849" y1="130" x2="874" y2="130" stroke="#34A853" stroke-width="2" marker-end="url(#pg)"/>
+
+        <!-- 6: Outputs -->
+        <rect x="876" y="30" width="172" height="200" rx="4" fill="#0F1C2E" stroke="#34A853" stroke-width="1.5"/>
+        <rect x="876" y="30" width="172" height="24" rx="4" fill="rgba(52,168,83,.25)"/>
+        <text x="962" y="46" fill="#80D0A0" font-size="9" font-weight="700" text-anchor="middle" letter-spacing="1">DASHBOARDS &amp; OUTPUTS</text>
+        <text x="962" y="70" fill="#80D0A0" font-size="8" font-weight="600" text-anchor="middle">Cross-Channel Attribution</text>
+        <text x="962" y="86" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">Shapley credit by channel/creative</text>
+        <text x="962" y="106" fill="#80D0A0" font-size="8" font-weight="600" text-anchor="middle">Budget Optimiser</text>
+        <text x="962" y="122" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">Marginal ROAS · spend guidance</text>
+        <text x="962" y="142" fill="#80D0A0" font-size="8" font-weight="600" text-anchor="middle">Journey Explorer</text>
+        <text x="962" y="158" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">Path visualisation · top sequences</text>
+        <text x="962" y="178" fill="#80D0A0" font-size="8" font-weight="600" text-anchor="middle">Econ MMM Feed</text>
+        <text x="962" y="194" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">mmm_base_daily → MMM team</text>
+        <text x="962" y="216" fill="rgba(255,255,255,.35)" font-size="7" text-anchor="middle">Scheduler: auto-deliver 06:00 UTC</text>
+      </svg>
+    </div>
+  </div>
+
   <div class="sw">
-    <div class="slabel">How It Works</div>
-    <h2 class="sh2">The Attribution <em>Data Flow</em></h2>
-    <p class="ssub">Six steps from signal to insight — all powered by Customer ID as the unifying thread through BigQuery and surfaced in Looker.</p>
-    <div style="background:var(--white);border:1px solid var(--border);padding:40px;">
-      <div class="flow-steps">
-        <div class="flow-step"><div class="flow-icon">📡</div><h5>Signal Collection</h5><p>GA4, Firebase, offline, MMP, TV, radio, OOH signals collected with Customer ID</p></div>
-        <div class="flow-step"><div class="flow-icon">🪪</div><h5>ID Stitching</h5><p>Identity Graph resolves all touchpoints to single Customer ID in BigQuery</p></div>
-        <div class="flow-step hl"><div class="flow-icon" style="font-size:16px;color:#fff;">BQ ML</div><h5>Attribution Model</h5><p>Shapley value distributes conversion credit across all contributing touches</p></div>
-        <div class="flow-step"><div class="flow-icon" style="font-size:18px;">📊</div><h5>Looker BI</h5><p>LookML models expose attribution data across all dimensions and channels</p></div>
-        <div class="flow-step"><div class="flow-icon">🎯</div><h5>Optimisation</h5><p>Budget reallocation, bid strategy updates and channel mix decisions</p></div>
+    <div class="slabel">Technical Architecture</div>
+    <h2 class="sh2">Pipeline Stage <em>Breakdown</em></h2>
+    <p class="ssub">Each stage of the attribution pipeline — with the actual BigQuery table names, stored procedure logic, and Looker LookML structure.</p>
+
+    <!-- STAGE CARDS -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);margin-bottom:32px;">
+      <div style="background:var(--white);padding:32px 28px;border-left:4px solid #1A73E8;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#1A73E8;margin-bottom:10px;">Stage 1 · Signal Ingestion</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:12px;">Raw Event Collection</h3>
+        <p style="font-size:13px;font-weight:300;color:var(--mid);line-height:1.7;margin-bottom:12px;">All signals land in GCP Cloud Storage as raw JSON or CSV before being processed into BigQuery staging tables by Dataflow pipelines. Server-side collection eliminates browser ITP/Safari blocking risk.</p>
+        <div style="background:var(--bg-2);padding:14px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#333;line-height:1.8;">
+          gs://tc-attribution-raw/<br>
+          &nbsp;&nbsp;ga4/events/YYYY-MM-DD/*.json<br>
+          &nbsp;&nbsp;mmp/postbacks/YYYY-MM-DD/*.json<br>
+          &nbsp;&nbsp;meta/capi/YYYY-MM-DD/*.json<br>
+          &nbsp;&nbsp;offline/pos/YYYY-MM-DD/*.csv
+        </div>
+        <ul class="sec-list" style="margin-top:14px;">
+          <li>GA4 → BQ native export (events table)</li>
+          <li>MMP S2S postbacks → GCS → Dataflow → BQ</li>
+          <li>Meta/Google CAPI → server-side → GCS staging</li>
+          <li>Offline POS/call → nightly SFTP → GCS → BQ</li>
+        </ul>
+      </div>
+      <div style="background:var(--white);padding:32px 28px;border-left:4px solid #7C4DFF;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7C4DFF;margin-bottom:10px;">Stage 2 · Identity Resolution</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:12px;">Unified Profile Assembly</h3>
+        <p style="font-size:13px;font-weight:300;color:var(--mid);line-height:1.7;margin-bottom:12px;">A BigQuery scheduled stored procedure runs nightly to deterministically join all signals to a unified profile ID. Probabilistic fallback fills gaps where deterministic match is unavailable.</p>
+        <div style="background:var(--bg-2);padding:14px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#333;line-height:1.8;">
+          -- Deterministic (priority 1)<br>
+          JOIN ON customer_id = eeid<br>
+          <br>
+          -- Email hash (priority 2)<br>
+          JOIN ON SHA256(email)<br>
+          <br>
+          -- Probabilistic (priority 3)<br>
+          JOIN ON device_graph_score &gt; 0.8
+        </div>
+        <ul class="sec-list" style="margin-top:14px;">
+          <li>Output: <code style="font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--bg-2);padding:1px 5px;">unified_profiles</code> table updated nightly</li>
+          <li>Consent flag enforced — opt-out profiles excluded</li>
+          <li>Match rate monitored via Looker system dashboard</li>
+        </ul>
+      </div>
+      <div style="background:var(--white);padding:32px 28px;border-left:4px solid #FBBC04;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#D97706;margin-bottom:10px;">Stage 3 · Touchpoint Assembly</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:12px;">Journey Array Construction</h3>
+        <p style="font-size:13px;font-weight:300;color:var(--mid);line-height:1.7;margin-bottom:12px;">For each converting customer, all touchpoints within the 90-day lookback window are assembled into an ordered journey array. Only consented touchpoints (consent_flag = 1) are included.</p>
+        <div style="background:var(--bg-2);padding:14px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#333;line-height:1.8;">
+          SELECT<br>
+          &nbsp;&nbsp;unified_profile_id,<br>
+          &nbsp;&nbsp;ARRAY_AGG(channel ORDER BY ts) AS journey,<br>
+          &nbsp;&nbsp;SUM(revenue) AS total_value<br>
+          FROM customer_touchpoints<br>
+          WHERE consent_flag = 1<br>
+          &nbsp;&nbsp;AND ts &gt; DATE_SUB(conv_date, 90)
+        </div>
+      </div>
+      <div style="background:var(--white);padding:32px 28px;border-left:4px solid var(--bain-red);">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--bain-red);margin-bottom:10px;">Stage 4 · Shapley Computation</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:12px;">Credit Distribution Logic</h3>
+        <p style="font-size:13px;font-weight:300;color:var(--mid);line-height:1.7;margin-bottom:12px;">The Shapley stored procedure iterates over all 2ⁿ subsets of channels observed in converting journeys. For each subset, it computes the marginal contribution of adding each channel — then averages across all permutations.</p>
+        <div style="background:var(--bg-2);padding:14px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#333;line-height:1.8;">
+          CALL shapley_attribution(<br>
+          &nbsp;&nbsp;journey_table =&gt; 'journey_arrays',<br>
+          &nbsp;&nbsp;lookback_days =&gt; 90,<br>
+          &nbsp;&nbsp;output_table =&gt; 'attribution_results_v2',<br>
+          &nbsp;&nbsp;include_offline =&gt; TRUE,<br>
+          &nbsp;&nbsp;channel_cap =&gt; 12<br>
+          );
+        </div>
+        <ul class="sec-list" style="margin-top:14px;">
+          <li>Runs as nightly BigQuery scheduled query (03:00 UTC)</li>
+          <li>Partitioned output by <code style="font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--bg-2);padding:1px 5px;">conversion_date</code> for query efficiency</li>
+          <li>Channel cap of 12 prevents combinatorial explosion</li>
+        </ul>
       </div>
     </div>
+
+    <div class="divider"></div>
+
+    <div class="slabel">Looker Architecture</div>
+    <h2 class="sh2">LookML Design &amp; <em>Dashboard Specifications</em></h2>
+
+    <div style="display:flex;flex-direction:column;gap:2px;">
+      <div class="acc"><div class="acc-hdr" onclick="toggleAcc(this)"><h4>📐 LookML Model — Full Structure</h4><span class="acc-arrow">+</span></div>
+      <div class="acc-body">
+        <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:16px;">The attribution LookML model has four Explores joined via <code style="font-family:'JetBrains Mono',monospace;background:var(--bg-2);padding:2px 6px;font-size:11px;">unified_profile_id</code>. All metric definitions live in LookML — no per-dashboard SQL. This ensures every team sees the same <code style="font-family:'JetBrains Mono',monospace;background:var(--bg-2);padding:2px 6px;font-size:11px;">shapley_credit</code> and <code style="font-family:'JetBrains Mono',monospace;background:var(--bg-2);padding:2px 6px;font-size:11px;">marginal_roas</code> numbers regardless of filter state.</p>
+        <div style="background:var(--ink-2);padding:20px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#60A0FF;line-height:2;overflow-x:auto;">
+          <span style="color:#888;">-- model: telecom_attribution</span><br>
+          connection: "bigquery_production"<br><br>
+          explore: attribution_model {<br>
+          &nbsp;&nbsp;label: "Cross-Channel Attribution"<br>
+          &nbsp;&nbsp;join: channel_spend {<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;type: left_outer<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;sql_on: ${attribution_model.channel} = ${channel_spend.channel}<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;AND ${attribution_model.date} = ${channel_spend.date} ;;<br>
+          &nbsp;&nbsp;}<br>
+          &nbsp;&nbsp;join: clv_scores {<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;type: left_outer<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;sql_on: ${attribution_model.unified_profile_id} = ${clv_scores.customer_id} ;;<br>
+          &nbsp;&nbsp;}<br>
+          &nbsp;&nbsp;join: product_conversion {<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;type: left_outer<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;sql_on: ${attribution_model.conversion_id} = ${product_conversion.order_id} ;;<br>
+          &nbsp;&nbsp;}<br>
+          }<br><br>
+          <span style="color:#888;">-- Key measures in attribution_model.view</span><br>
+          measure: shapley_credit {<br>
+          &nbsp;&nbsp;type: sum<br>
+          &nbsp;&nbsp;sql: ${shapley_value} ;;<br>
+          &nbsp;&nbsp;value_format: "0.0%"<br>
+          }<br>
+          measure: marginal_roas {<br>
+          &nbsp;&nbsp;type: number<br>
+          &nbsp;&nbsp;sql: ${attributed_revenue} / NULLIF(${channel_spend.spend},0) ;;<br>
+          &nbsp;&nbsp;value_format: "#,##0.0x"<br>
+          }
+        </div>
+      </div></div>
+
+      <div class="acc"><div class="acc-hdr" onclick="toggleAcc(this)"><h4>🔄 PDT Refresh Architecture &amp; BigQuery Connection</h4><span class="acc-arrow">+</span></div>
+      <div class="acc-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+          <div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:12px;">Looker connects to BigQuery via a dedicated service account (<code style="font-family:'JetBrains Mono',monospace;background:var(--bg-2);padding:2px 5px;font-size:11px;">looker-bq-reader@project.iam</code>) with <strong>BigQuery Data Viewer</strong> and <strong>BigQuery Job User</strong> roles only — no write access.</p>
+            <ul class="sec-list">
+              <li>PDT: <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">attribution_by_channel_day</code> — pre-aggregated Shapley totals by channel + date. Rebuilds nightly at 05:00 UTC.</li>
+              <li>PDT: <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">journey_paths_top100</code> — top 100 converting path sequences. Used in Journey Explorer.</li>
+              <li>All heavy JOINs happen in PDTs — dashboard load target &lt;3s at P95.</li>
+            </ul>
+          </div>
+          <div style="background:var(--bg-2);padding:16px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#333;line-height:1.9;">
+            <span style="color:var(--bain-red);font-weight:700;">PDT SCHEDULE</span><br>
+            03:00 UTC → Shapley SP runs<br>
+            04:00 UTC → BQ views refresh<br>
+            05:00 UTC → Looker PDTs rebuild<br>
+            06:00 UTC → Looker Scheduler<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ emails sent to teams<br><br>
+            <span style="color:var(--bain-red);font-weight:700;">TRIGGER CHAIN</span><br>
+            Cloud Scheduler<br>
+            → Pub/Sub → Dataflow<br>
+            → BQ Stored Proc<br>
+            → BQ Scheduled Query<br>
+            → Looker API rebuild
+          </div>
+        </div>
+      </div></div>
+
+      <div class="acc"><div class="acc-hdr" onclick="toggleAcc(this)"><h4>📊 Dashboard 1 — Cross-Channel Attribution View</h4><span class="acc-arrow">+</span></div>
+      <div class="acc-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+          <div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:12px;">Primary decision-making dashboard for channel teams. Shows Shapley credit percentage, attributed revenue, marginal ROAS and spend efficiency per channel — all filterable by product line, CLV segment, and date range.</p>
+            <ul class="sec-list">
+              <li><strong>Tile 1:</strong> Stacked bar — Shapley credit % by channel over time</li>
+              <li><strong>Tile 2:</strong> Scatter — Marginal ROAS vs spend volume per channel</li>
+              <li><strong>Tile 3:</strong> Table — Campaign-level Shapley breakdown with spend delta vs attributed revenue</li>
+              <li><strong>Tile 4:</strong> Funnel — Upper vs lower funnel credit distribution</li>
+              <li><strong>Filters:</strong> product_line, clv_tier, conversion_type, date_range</li>
+            </ul>
+          </div>
+          <div style="background:var(--ink-2);padding:20px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#60A0FF;line-height:2;">
+            <span style="color:#888;">-- Tile 2: Marginal ROAS scatter</span><br>
+            SELECT<br>
+            &nbsp;&nbsp;channel,<br>
+            &nbsp;&nbsp;SUM(shapley_value) / SUM(spend)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;AS marginal_roas,<br>
+            &nbsp;&nbsp;SUM(spend) AS total_spend,<br>
+            &nbsp;&nbsp;SUM(attributed_revenue) AS rev<br>
+            FROM attribution_results_v2<br>
+            JOIN channel_spend USING (channel, date)<br>
+            WHERE date BETWEEN @start AND @end<br>
+            &nbsp;&nbsp;AND clv_tier IN UNNEST(@tiers)<br>
+            GROUP BY 1
+          </div>
+        </div>
+      </div></div>
+
+      <div class="acc"><div class="acc-hdr" onclick="toggleAcc(this)"><h4>🗺️ Dashboard 2 — Customer Journey Path Explorer</h4><span class="acc-arrow">+</span></div>
+      <div class="acc-body">
+        <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:16px;">A Sankey-style path visualisation showing the most common sequences of channel touchpoints before conversion. Built on the <code style="font-family:'JetBrains Mono',monospace;background:var(--bg-2);padding:2px 5px;font-size:11px;">journey_paths_top100</code> PDT. Dimensions: path length, conversion type, product, CLV tier. Key use: identifies where upper-funnel channels drop off and surfaces the highest-converting sequences for budget reinforcement.</p>
+        <div style="background:var(--ink-2);padding:18px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#60A0FF;line-height:2;">
+          <span style="color:#888;">-- journey_paths PDT logic</span><br>
+          SELECT<br>
+          &nbsp;&nbsp;ARRAY_TO_STRING(journey_array, ' → ') AS path,<br>
+          &nbsp;&nbsp;COUNT(*) AS conversion_count,<br>
+          &nbsp;&nbsp;AVG(revenue_value) AS avg_order_value,<br>
+          &nbsp;&nbsp;ARRAY_LENGTH(journey_array) AS path_length<br>
+          FROM journey_arrays<br>
+          WHERE converted = TRUE<br>
+          &nbsp;&nbsp;AND consent_flag = 1<br>
+          GROUP BY 1,4<br>
+          ORDER BY 2 DESC<br>
+          LIMIT 100
+        </div>
+      </div></div>
+
+      <div class="acc"><div class="acc-hdr" onclick="toggleAcc(this)"><h4>📉 Dashboard 3 — Budget Optimiser &amp; Econ MMM Feed</h4><span class="acc-arrow">+</span></div>
+      <div class="acc-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+          <div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:12px;"><strong>Budget Optimiser:</strong> Surfaces over- and under-invested channels based on marginal ROAS vs target threshold. Generates recommended spend delta per channel week-on-week. Connected to CLV tier weighting — premium CLV segment channels get a ROAS premium adjustment factor.</p>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;"><strong>Econometrics MMM Feed:</strong> A daily scheduled query outputs the <code style="font-family:'JetBrains Mono',monospace;background:var(--bg-2);padding:2px 5px;font-size:11px;">mmm_base_daily</code> table to the MMM team. Contains standardised impressions, spend, clicks, conversions and GRP (for TV) by channel × day. Serves as the primary input to the Marketing Mix Model — ensuring Shapley and MMM signals are aligned from the same BigQuery source.</p>
+          </div>
+          <div style="background:var(--bg-2);padding:16px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#333;line-height:1.9;">
+            <span style="color:var(--bain-red);font-weight:700;">MMM FEED TABLE SCHEMA</span><br>
+            mmm_base_daily (<br>
+            &nbsp;&nbsp;date DATE,<br>
+            &nbsp;&nbsp;channel STRING,<br>
+            &nbsp;&nbsp;impressions INT64,<br>
+            &nbsp;&nbsp;clicks INT64,<br>
+            &nbsp;&nbsp;spend FLOAT64,<br>
+            &nbsp;&nbsp;conversions INT64,<br>
+            &nbsp;&nbsp;attributed_rev FLOAT64,<br>
+            &nbsp;&nbsp;grp FLOAT64,&nbsp;&nbsp;<span style="color:#888;">-- TV</span><br>
+            &nbsp;&nbsp;shapley_credit FLOAT64<br>
+            )
+          </div>
+        </div>
+      </div></div>
+
+      <div class="acc"><div class="acc-hdr" onclick="toggleAcc(this)"><h4>⚡ Why Shapley Beats Last-Click for Telecoms</h4><span class="acc-arrow">+</span></div>
+      <div class="acc-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+          <div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:12px;">In telecoms, the average customer journey to contract conversion spans <strong>8–12 touchpoints over 30–60 days</strong>. A typical converting journey looks like: TV impression → OOH → Paid Social → Organic Search → Display Retargeting → Brand Paid Search → conversion.</p>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:12px;">Last-click attributes 100% of credit to Brand Paid Search — the cheapest, lowest-effort touchpoint. This systematically starves upper-funnel investment over time, degrading the pool of demand that lower-funnel can harvest.</p>
+            <div style="background:var(--bg-2);padding:14px;border-left:3px solid var(--bain-red);">
+              <div style="font-size:11px;font-weight:700;color:var(--bain-red);letter-spacing:1px;margin-bottom:8px;">EXPECTED BUDGET REALLOCATION AT LAUNCH</div>
+              <p style="font-size:12px;color:var(--mid);line-height:1.7;">When Shapley replaces last-click, typical telecoms outcomes: <strong>+15–25% budget shift</strong> from brand search/retargeting to prospecting channels (TV, Social, Display). Short-term ROAS appears to drop 10–15% before recovering as the upper funnel rebuilds volume — this should be pre-agreed with Finance before launch.</p>
+            </div>
+          </div>
+          <div>
+            <div style="background:var(--ink-2);padding:16px;margin-bottom:16px;">
+              <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:12px;">Last-Click vs Shapley · Example Journey</div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;">
+                  <span style="color:rgba(255,255,255,.6);">TV Awareness</span>
+                  <div style="display:flex;gap:8px;">
+                    <span style="color:#EA4335;font-family:'JetBrains Mono',monospace;">0%</span>
+                    <span style="color:#34A853;font-family:'JetBrains Mono',monospace;">18%</span>
+                  </div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;">
+                  <span style="color:rgba(255,255,255,.6);">Paid Social</span>
+                  <div style="display:flex;gap:8px;">
+                    <span style="color:#EA4335;font-family:'JetBrains Mono',monospace;">0%</span>
+                    <span style="color:#34A853;font-family:'JetBrains Mono',monospace;">22%</span>
+                  </div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;">
+                  <span style="color:rgba(255,255,255,.6);">Display</span>
+                  <div style="display:flex;gap:8px;">
+                    <span style="color:#EA4335;font-family:'JetBrains Mono',monospace;">0%</span>
+                    <span style="color:#34A853;font-family:'JetBrains Mono',monospace;">15%</span>
+                  </div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;">
+                  <span style="color:rgba(255,255,255,.6);">Org. Search</span>
+                  <div style="display:flex;gap:8px;">
+                    <span style="color:#EA4335;font-family:'JetBrains Mono',monospace;">0%</span>
+                    <span style="color:#34A853;font-family:'JetBrains Mono',monospace;">12%</span>
+                  </div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;">
+                  <span style="color:rgba(255,255,255,.6);">Brand Search</span>
+                  <div style="display:flex;gap:8px;">
+                    <span style="color:#EA4335;font-family:'JetBrains Mono',monospace;font-weight:700;">100%</span>
+                    <span style="color:#34A853;font-family:'JetBrains Mono',monospace;">33%</span>
+                  </div>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:10px;border-top:1px solid rgba(255,255,255,.1);padding-top:6px;margin-top:4px;">
+                  <span style="color:rgba(255,255,255,.3);">Model</span>
+                  <div style="display:flex;gap:8px;"><span style="color:#EA4335;font-size:10px;">Last-Click</span><span style="color:#34A853;font-size:10px;">Shapley</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ═══ DETAILED ATTRIBUTION DATA FLOW DIAGRAM ═══ -->
+    <div class="slabel">Attribution Data Flow</div>
+    <h2 class="sh2">How Every Signal Reaches <em>Looker</em></h2>
+    <p class="ssub">End-to-end signal flow from raw channel events through BigQuery identity stitching, Shapley modelling and final Looker dashboard delivery.</p>
+
+    <div style="background:var(--ink-2);border-radius:2px;padding:40px 32px;margin-bottom:48px;overflow-x:auto;position:relative;">
+      <svg viewBox="0 0 1060 500" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3',sans-serif" style="width:100%;min-width:800px;display:block;">
+        <defs>
+          <marker id="da" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="rgba(255,255,255,.45)"/></marker>
+          <marker id="da-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#34A853"/></marker>
+          <marker id="da-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1A73E8"/></marker>
+          <marker id="da-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#CC0000"/></marker>
+          <marker id="da-y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#FBBC04"/></marker>
+          <filter id="glo"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <!-- Animated flow keyframes via animateTransform on dots -->
+        </defs>
+
+        <!-- BG -->
+        <rect width="1060" height="500" fill="#0D1520"/>
+        <pattern id="dgrid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0L0 0 0 32" fill="none" stroke="rgba(255,255,255,.025)" stroke-width="1"/></pattern>
+        <rect width="1060" height="500" fill="url(#dgrid)"/>
+
+        <!-- ══ COLUMN HEADERS ══ -->
+        <text x="75"  y="20" fill="rgba(255,255,255,.3)" font-size="8.5" font-weight="700" letter-spacing="1.5" text-anchor="middle">CHANNEL SIGNALS</text>
+        <text x="260" y="20" fill="rgba(255,255,255,.3)" font-size="8.5" font-weight="700" letter-spacing="1.5" text-anchor="middle">INGESTION LAYER</text>
+        <text x="450" y="20" fill="rgba(255,255,255,.3)" font-size="8.5" font-weight="700" letter-spacing="1.5" text-anchor="middle">BIGQUERY CDP</text>
+        <text x="660" y="20" fill="rgba(255,255,255,.3)" font-size="8.5" font-weight="700" letter-spacing="1.5" text-anchor="middle">ATTRIBUTION ENGINE</text>
+        <text x="870" y="20" fill="rgba(255,255,255,.3)" font-size="8.5" font-weight="700" letter-spacing="1.5" text-anchor="middle">LOOKER BI</text>
+        <text x="1005" y="20" fill="rgba(255,255,255,.3)" font-size="8.5" font-weight="700" letter-spacing="1.5" text-anchor="middle">OUTPUT</text>
+
+        <!-- Vertical lane lines -->
+        <line x1="162" y1="28" x2="162" y2="492" stroke="rgba(255,255,255,.05)" stroke-width="1" stroke-dasharray="3,5"/>
+        <line x1="355" y1="28" x2="355" y2="492" stroke="rgba(255,255,255,.05)" stroke-width="1" stroke-dasharray="3,5"/>
+        <line x1="555" y1="28" x2="555" y2="492" stroke="rgba(255,255,255,.05)" stroke-width="1" stroke-dasharray="3,5"/>
+        <line x1="766" y1="28" x2="766" y2="492" stroke="rgba(255,255,255,.05)" stroke-width="1" stroke-dasharray="3,5"/>
+        <line x1="960" y1="28" x2="960" y2="492" stroke="rgba(255,255,255,.05)" stroke-width="1" stroke-dasharray="3,5"/>
+
+        <!-- ══ CHANNEL SIGNAL BOXES (col 1) ══ -->
+        <!-- GA4 Web -->
+        <rect x="8" y="38" width="134" height="38" rx="3" fill="#0D2035" stroke="#1A73E8" stroke-width="1.5"/>
+        <text x="75" y="53" fill="#60AEFF" font-size="9" font-weight="700" text-anchor="middle">GA4 WEB STREAM</text>
+        <text x="75" y="67" fill="rgba(255,255,255,.45)" font-size="8" text-anchor="middle">Customer ID · GCLID</text>
+
+        <!-- Firebase App -->
+        <rect x="8" y="90" width="134" height="38" rx="3" fill="#0D2035" stroke="#FBBC04" stroke-width="1.5"/>
+        <text x="75" y="105" fill="#FBBC04" font-size="9" font-weight="700" text-anchor="middle">FIREBASE APP SDK</text>
+        <text x="75" y="119" fill="rgba(255,255,255,.45)" font-size="8" text-anchor="middle">App events · In-app conv</text>
+
+        <!-- MMP -->
+        <rect x="8" y="142" width="134" height="38" rx="3" fill="#0D2035" stroke="#AA00FF" stroke-width="1.5"/>
+        <text x="75" y="157" fill="#CC66FF" font-size="9" font-weight="700" text-anchor="middle">MMP (S2S)</text>
+        <text x="75" y="171" fill="rgba(255,255,255,.45)" font-size="8" text-anchor="middle">SKAN · Android · Web</text>
+
+        <!-- Meta CAPI -->
+        <rect x="8" y="194" width="134" height="38" rx="3" fill="#0D2035" stroke="#1877F2" stroke-width="1.5"/>
+        <text x="75" y="209" fill="#60A0FF" font-size="9" font-weight="700" text-anchor="middle">META CAPI</text>
+        <text x="75" y="223" fill="rgba(255,255,255,.45)" font-size="8" text-anchor="middle">Server-side · Hashed PII</text>
+
+        <!-- DV360 / CM360 -->
+        <rect x="8" y="246" width="134" height="38" rx="3" fill="#0D2035" stroke="#4285F4" stroke-width="1.5"/>
+        <text x="75" y="261" fill="#80BAFF" font-size="9" font-weight="700" text-anchor="middle">DV360 / CM360</text>
+        <text x="75" y="275" fill="rgba(255,255,255,.45)" font-size="8" text-anchor="middle">View + click signals</text>
+
+        <!-- Offline POS -->
+        <rect x="8" y="298" width="134" height="38" rx="3" fill="#0D2035" stroke="#34A853" stroke-width="1.5"/>
+        <text x="75" y="313" fill="#5DC878" font-size="9" font-weight="700" text-anchor="middle">OFFLINE / STORE</text>
+        <text x="75" y="327" fill="rgba(255,255,255,.45)" font-size="8" text-anchor="middle">POS · Call · Direct Mail</text>
+
+        <!-- TV / GRP -->
+        <rect x="8" y="350" width="134" height="38" rx="3" fill="#0D2035" stroke="#EA4335" stroke-width="1.5"/>
+        <text x="75" y="365" fill="#FF7060" font-size="9" font-weight="700" text-anchor="middle">TV / LINEAR</text>
+        <text x="75" y="379" fill="rgba(255,255,255,.45)" font-size="8" text-anchor="middle">GRP · Spots · Panels</text>
+
+        <!-- Keyword -->
+        <rect x="8" y="402" width="134" height="38" rx="3" fill="#0D2035" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
+        <text x="75" y="417" fill="rgba(255,255,255,.7)" font-size="9" font-weight="700" text-anchor="middle">SEARCH KEYWORDS</text>
+        <text x="75" y="431" fill="rgba(255,255,255,.45)" font-size="8" text-anchor="middle">Paid + Organic daily</text>
+
+        <!-- ══ INGESTION LAYER (col 2) ══ -->
+        <!-- Event Streams / CAPI Layer -->
+        <rect x="175" y="38" width="166" height="92" rx="3" fill="#0F1E30" stroke="#1A73E8" stroke-width="1.5"/>
+        <text x="258" y="57" fill="#1A73E8" font-size="9" font-weight="700" text-anchor="middle" letter-spacing=".5">SERVER-SIDE EVENTS</text>
+        <text x="258" y="75" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">CAPI · S2S tracking</text>
+        <text x="258" y="91" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">Tag Manager server</text>
+        <text x="258" y="107" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">GCS staging bucket</text>
+
+        <!-- Consent Gate -->
+        <rect x="175" y="146" width="166" height="72" rx="3" fill="#0F1E30" stroke="#34A853" stroke-width="2"/>
+        <text x="258" y="165" fill="#34A853" font-size="9" font-weight="700" text-anchor="middle" letter-spacing=".5">✓ CONSENT GATE</text>
+        <text x="258" y="183" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">CMP · GDPR check</text>
+        <text x="258" y="199" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">Suppression lists</text>
+
+        <!-- Dataflow pipeline -->
+        <rect x="175" y="234" width="166" height="72" rx="3" fill="#0F1E30" stroke="#FBBC04" stroke-width="1.5"/>
+        <text x="258" y="253" fill="#FBBC04" font-size="9" font-weight="700" text-anchor="middle" letter-spacing=".5">DATAFLOW PIPELINE</text>
+        <text x="258" y="271" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">Batch + streaming ETL</text>
+        <text x="258" y="287" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">Schema validation · dbt</text>
+
+        <!-- Offline ingestion -->
+        <rect x="175" y="322" width="166" height="72" rx="3" fill="#0F1E30" stroke="#34A853" stroke-width="1.5"/>
+        <text x="258" y="341" fill="#5DC878" font-size="9" font-weight="700" text-anchor="middle" letter-spacing=".5">OFFLINE INGESTION</text>
+        <text x="258" y="359" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">Nightly CSV + API load</text>
+        <text x="258" y="375" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">GCS → BQ pipeline</text>
+
+        <!-- ══ BIGQUERY CDP (col 3) ══ -->
+        <rect x="368" y="38" width="174" height="430" rx="4" fill="#071830" stroke="#1A73E8" stroke-width="2"/>
+        <rect x="368" y="38" width="174" height="28" rx="4" fill="#1A73E8"/>
+        <text x="455" y="57" fill="white" font-size="9.5" font-weight="700" text-anchor="middle" letter-spacing=".8">BIGQUERY · CDP CORE</text>
+
+        <!-- BQ sub-boxes -->
+        <rect x="380" y="80" width="150" height="44" rx="2" fill="#0A2540" stroke="rgba(26,115,232,.35)" stroke-width="1"/>
+        <text x="455" y="97" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">IDENTITY RESOLUTION</text>
+        <text x="455" y="113" fill="rgba(255,255,255,.45)" font-size="7.5" text-anchor="middle">Customer ID stitching · 2P match</text>
+
+        <rect x="380" y="136" width="150" height="44" rx="2" fill="#0A2540" stroke="rgba(26,115,232,.35)" stroke-width="1"/>
+        <text x="455" y="153" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">TOUCHPOINT HISTORY</text>
+        <text x="455" y="169" fill="rgba(255,255,255,.45)" font-size="7.5" text-anchor="middle">90-day rolling window</text>
+
+        <rect x="380" y="192" width="150" height="44" rx="2" fill="#0A2540" stroke="rgba(26,115,232,.35)" stroke-width="1"/>
+        <text x="455" y="209" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">CLV / CCV SCORES</text>
+        <text x="455" y="225" fill="rgba(255,255,255,.45)" font-size="7.5" text-anchor="middle">BQ ML · Daily refresh</text>
+
+        <rect x="380" y="248" width="150" height="44" rx="2" fill="#0A2540" stroke="rgba(26,115,232,.35)" stroke-width="1"/>
+        <text x="455" y="265" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">ORDER CONVERSION</text>
+        <text x="455" y="281" fill="rgba(255,255,255,.45)" font-size="7.5" text-anchor="middle">BB · Mobile · Voice</text>
+
+        <rect x="380" y="304" width="150" height="44" rx="2" fill="#0A2540" stroke="rgba(26,115,232,.35)" stroke-width="1"/>
+        <text x="455" y="321" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">MMM BASE DATA</text>
+        <text x="455" y="337" fill="rgba(255,255,255,.45)" font-size="7.5" text-anchor="middle">Econometrics feed table</text>
+
+        <rect x="380" y="360" width="150" height="44" rx="2" fill="#0A2540" stroke="rgba(26,115,232,.35)" stroke-width="1"/>
+        <text x="455" y="377" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">AUDIENCE SEGMENTS</text>
+        <text x="455" y="393" fill="rgba(255,255,255,.45)" font-size="7.5" text-anchor="middle">CLV · Life Stage · Apple Lovers</text>
+
+        <rect x="380" y="416" width="150" height="40" rx="2" fill="#0A2540" stroke="rgba(26,115,232,.35)" stroke-width="1"/>
+        <text x="455" y="433" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">KEYWORD PERF</text>
+        <text x="455" y="449" fill="rgba(255,255,255,.45)" font-size="7.5" text-anchor="middle">Paid vs Organic signals</text>
+
+        <!-- BQ pulse -->
+        <circle cx="542" cy="250" r="4" fill="#1A73E8" opacity=".8" filter="url(#glo)">
+          <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values=".8;.3;.8" dur="2s" repeatCount="indefinite"/>
+        </circle>
+
+        <!-- ══ ATTRIBUTION ENGINE (col 4) ══ -->
+        <!-- Shapley stored proc -->
+        <rect x="568" y="38" width="184" height="100" rx="3" fill="#1A0A00" stroke="#CC0000" stroke-width="2"/>
+        <rect x="568" y="38" width="184" height="26" rx="3" fill="#CC0000"/>
+        <text x="660" y="55" fill="white" font-size="9.5" font-weight="700" text-anchor="middle" letter-spacing=".8">SHAPLEY PROC (BQ ML)</text>
+        <text x="660" y="81" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">For each converting customer_id:</text>
+        <text x="660" y="97" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">Evaluate all 2ⁿ channel subsets</text>
+        <text x="660" y="113" fill="rgba(255,255,255,.55)" font-size="8" text-anchor="middle">Write credit to attribution_results</text>
+
+        <!-- attribution_results table -->
+        <rect x="568" y="155" width="184" height="90" rx="3" fill="#1A0A00" stroke="rgba(204,0,0,.5)" stroke-width="1.5"/>
+        <text x="660" y="174" fill="#FF6060" font-size="9" font-weight="700" text-anchor="middle" letter-spacing=".5">attribution_results TABLE</text>
+        <text x="660" y="192" fill="rgba(255,255,255,.4)" font-size="7.5" text-anchor="middle">customer_id · channel</text>
+        <text x="660" y="207" fill="rgba(255,255,255,.4)" font-size="7.5" text-anchor="middle">shapley_credit · conv_value</text>
+        <text x="660" y="222" fill="rgba(255,255,255,.4)" font-size="7.5" text-anchor="middle">touchpoint_seq · date</text>
+
+        <!-- Scheduled refresh -->
+        <rect x="568" y="262" width="184" height="72" rx="3" fill="#0D1F0D" stroke="#34A853" stroke-width="1.5"/>
+        <text x="660" y="281" fill="#34A853" font-size="9" font-weight="700" text-anchor="middle" letter-spacing=".5">CLOUD SCHEDULER</text>
+        <text x="660" y="299" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">Nightly 02:00 UTC trigger</text>
+        <text x="660" y="315" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">Materialised view refresh</text>
+
+        <!-- PDT -->
+        <rect x="568" y="350" width="184" height="72" rx="3" fill="#1A0A00" stroke="rgba(204,0,0,.4)" stroke-width="1.5"/>
+        <text x="660" y="369" fill="#FF8080" font-size="9" font-weight="700" text-anchor="middle" letter-spacing=".5">LOOKER PDT LAYER</text>
+        <text x="660" y="387" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">Pre-aggregated by channel</text>
+        <text x="660" y="403" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">Cached · &lt;3s dashboard load</text>
+
+        <!-- ══ LOOKER BI (col 5) ══ -->
+        <rect x="780" y="38" width="166" height="430" rx="4" fill="#0A1F12" stroke="#34A853" stroke-width="2"/>
+        <rect x="780" y="38" width="166" height="28" rx="4" fill="#34A853"/>
+        <text x="863" y="57" fill="white" font-size="9.5" font-weight="700" text-anchor="middle" letter-spacing=".8">LOOKER · BI LAYER</text>
+
+        <rect x="792" y="80" width="142" height="44" rx="2" fill="#0D2814" stroke="rgba(52,168,83,.3)" stroke-width="1"/>
+        <text x="863" y="97" fill="#60D080" font-size="8.5" font-weight="700" text-anchor="middle">CHANNEL ATTRIBUTION</text>
+        <text x="863" y="113" fill="rgba(255,255,255,.45)" font-size="7.5" text-anchor="middle">Shapley credit by channel</text>
+
+        <rect x="792" y="136" width="142" height="44" rx="2" fill="#0D2814" stroke="rgba(52,168,83,.3)" stroke-width="1"/>
+        <text x="863" y="153" fill="#60D080" font-size="8.5" font-weight="700" text-anchor="middle">JOURNEY EXPLORER</text>
+        <text x="863" y="169" fill="rgba(255,255,255,.45)" font-size="7.5" text-anchor="middle">Touch path visualisation</text>
+
+        <rect x="792" y="192" width="142" height="44" rx="2" fill="#0D2814" stroke="rgba(52,168,83,.3)" stroke-width="1"/>
+        <text x="863" y="209" fill="#60D080" font-size="8.5" font-weight="700" text-anchor="middle">BUDGET OPTIMISER</text>
+        <text x="863" y="225" fill="rgba(255,255,255,.45)" font-size="7.5" text-anchor="middle">Marginal ROAS by channel</text>
+
+        <rect x="792" y="248" width="142" height="44" rx="2" fill="#0D2814" stroke="rgba(52,168,83,.3)" stroke-width="1"/>
+        <text x="863" y="265" fill="#60D080" font-size="8.5" font-weight="700" text-anchor="middle">AUDIENCE PERF</text>
+        <text x="863" y="281" fill="rgba(255,255,255,.45)" font-size="7.5" text-anchor="middle">CLV segment × channel</text>
+
+        <rect x="792" y="304" width="142" height="44" rx="2" fill="#0D2814" stroke="rgba(52,168,83,.3)" stroke-width="1"/>
+        <text x="863" y="321" fill="#60D080" font-size="8.5" font-weight="700" text-anchor="middle">ECONOMETRICS FEED</text>
+        <text x="863" y="337" fill="rgba(255,255,255,.45)" font-size="7.5" text-anchor="middle">MMM daily input view</text>
+
+        <rect x="792" y="360" width="142" height="44" rx="2" fill="#0D2814" stroke="rgba(52,168,83,.3)" stroke-width="1"/>
+        <text x="863" y="377" fill="#60D080" font-size="8.5" font-weight="700" text-anchor="middle">KEYWORD CANNIBAL.</text>
+        <text x="863" y="393" fill="rgba(255,255,255,.45)" font-size="7.5" text-anchor="middle">Paid vs Organic overlap</text>
+
+        <rect x="792" y="416" width="142" height="40" rx="2" fill="#0D2814" stroke="rgba(52,168,83,.3)" stroke-width="1"/>
+        <text x="863" y="433" fill="#60D080" font-size="8.5" font-weight="700" text-anchor="middle">SCHEDULER · ALERTS</text>
+        <text x="863" y="449" fill="rgba(255,255,255,.45)" font-size="7.5" text-anchor="middle">Daily email · Slack notify</text>
+
+        <!-- Looker pulse -->
+        <circle cx="863" cy="250" r="4" fill="#34A853" opacity=".8" filter="url(#glo)">
+          <animate attributeName="r" values="4;7;4" dur="2.5s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values=".8;.2;.8" dur="2.5s" repeatCount="indefinite"/>
+        </circle>
+
+        <!-- ══ OUTPUTS (col 6) ══ -->
+        <rect x="975" y="55" width="78" height="44" rx="3" fill="#0D0D1A" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+        <text x="1014" y="73" fill="rgba(255,255,255,.7)" font-size="8.5" font-weight="700" text-anchor="middle">DASHBOARDS</text>
+        <text x="1014" y="88" fill="rgba(255,255,255,.4)" font-size="7.5" text-anchor="middle">Self-serve</text>
+
+        <rect x="975" y="115" width="78" height="44" rx="3" fill="#0D0D1A" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+        <text x="1014" y="133" fill="rgba(255,255,255,.7)" font-size="8.5" font-weight="700" text-anchor="middle">BUDGET RECS</text>
+        <text x="1014" y="148" fill="rgba(255,255,255,.4)" font-size="7.5" text-anchor="middle">Finance input</text>
+
+        <rect x="975" y="175" width="78" height="44" rx="3" fill="#0D0D1A" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+        <text x="1014" y="193" fill="rgba(255,255,255,.7)" font-size="8.5" font-weight="700" text-anchor="middle">MMM INPUT</text>
+        <text x="1014" y="208" fill="rgba(255,255,255,.4)" font-size="7.5" text-anchor="middle">Econometrics</text>
+
+        <rect x="975" y="235" width="78" height="44" rx="3" fill="#0D0D1A" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+        <text x="1014" y="253" fill="rgba(255,255,255,.7)" font-size="8.5" font-weight="700" text-anchor="middle">DAILY ALERTS</text>
+        <text x="1014" y="268" fill="rgba(255,255,255,.4)" font-size="7.5" text-anchor="middle">Email · Slack</text>
+
+        <rect x="975" y="295" width="78" height="44" rx="3" fill="#0D0D1A" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+        <text x="1014" y="313" fill="rgba(255,255,255,.7)" font-size="8.5" font-weight="700" text-anchor="middle">AUDIENCE ACT.</text>
+        <text x="1014" y="328" fill="rgba(255,255,255,.4)" font-size="7.5" text-anchor="middle">Conn. Hub push</text>
+
+        <!-- ══ FLOW LINES: Sources → Ingestion ══ -->
+        <line x1="142" y1="57"  x2="175" y2="75"  stroke="#1A73E8" stroke-width="1.2" marker-end="url(#da-b)" opacity=".7"/>
+        <line x1="142" y1="109" x2="175" y2="80"  stroke="#FBBC04" stroke-width="1.2" marker-end="url(#da-y)" opacity=".7"/>
+        <line x1="142" y1="161" x2="175" y2="85"  stroke="#AA00FF" stroke-width="1.2" marker-end="url(#da)"   opacity=".6"/>
+        <line x1="142" y1="213" x2="175" y2="162" stroke="#1877F2" stroke-width="1.2" marker-end="url(#da-b)" opacity=".65"/>
+        <line x1="142" y1="265" x2="175" y2="250" stroke="#4285F4" stroke-width="1.2" marker-end="url(#da-b)" opacity=".6"/>
+        <line x1="142" y1="317" x2="175" y2="338" stroke="#34A853" stroke-width="1.2" marker-end="url(#da-g)" opacity=".7"/>
+        <line x1="142" y1="369" x2="175" y2="360" stroke="#EA4335" stroke-width="1.2" marker-end="url(#da)"   opacity=".6"/>
+        <line x1="142" y1="421" x2="175" y2="370" stroke="rgba(255,255,255,.3)" stroke-width="1" marker-end="url(#da)" opacity=".5"/>
+
+        <!-- Ingestion → BQ -->
+        <line x1="341" y1="84"  x2="368" y2="102" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#da-b)" opacity=".7"/>
+        <line x1="341" y1="182" x2="368" y2="158" stroke="#34A853" stroke-width="1.5" marker-end="url(#da-g)" opacity=".7"/>
+        <line x1="341" y1="270" x2="368" y2="210" stroke="#FBBC04" stroke-width="1.5" marker-end="url(#da-y)" opacity=".6"/>
+        <line x1="341" y1="358" x2="368" y2="380" stroke="#34A853" stroke-width="1.5" marker-end="url(#da-g)" opacity=".6"/>
+
+        <!-- Animated flow: BQ → Attribution -->
+        <line x1="542" y1="180" x2="568" y2="88"  stroke="#CC0000" stroke-width="1.8" marker-end="url(#da-r)" opacity=".8"/>
+        <line x1="542" y1="250" x2="568" y2="200" stroke="#CC0000" stroke-width="1.8" marker-end="url(#da-r)" opacity=".7"/>
+        <line x1="542" y1="320" x2="568" y2="298" stroke="#CC0000" stroke-width="1.5" marker-end="url(#da-r)" opacity=".6"/>
+        <line x1="542" y1="390" x2="568" y2="386" stroke="#CC0000" stroke-width="1.2" marker-end="url(#da-r)" opacity=".5"/>
+        <!-- animated dash line BQ→Attribution -->
+        <path d="M542 250 L568 200" stroke="#CC0000" stroke-width="2.5" stroke-dasharray="5,9" opacity=".7">
+          <animate attributeName="stroke-dashoffset" from="60" to="0" dur="1.8s" repeatCount="indefinite"/>
+        </path>
+
+        <!-- Attribution → Looker -->
+        <line x1="752" y1="88"  x2="780" y2="102" stroke="#34A853" stroke-width="1.8" marker-end="url(#da-g)" opacity=".8"/>
+        <line x1="752" y1="200" x2="780" y2="214" stroke="#34A853" stroke-width="1.8" marker-end="url(#da-g)" opacity=".7"/>
+        <line x1="752" y1="298" x2="780" y2="326" stroke="#34A853" stroke-width="1.5" marker-end="url(#da-g)" opacity=".65"/>
+        <line x1="752" y1="386" x2="780" y2="380" stroke="#34A853" stroke-width="1.5" marker-end="url(#da-g)" opacity=".6"/>
+        <!-- animated dash line Attr→Looker -->
+        <path d="M752 200 L780 214" stroke="#34A853" stroke-width="2.5" stroke-dasharray="5,9" opacity=".7">
+          <animate attributeName="stroke-dashoffset" from="60" to="0" dur="1.5s" repeatCount="indefinite"/>
+        </path>
+
+        <!-- Looker → Outputs -->
+        <line x1="946" y1="102" x2="975" y2="77"  stroke="rgba(255,255,255,.3)" stroke-width="1.2" marker-end="url(#da)" opacity=".6"/>
+        <line x1="946" y1="158" x2="975" y2="137" stroke="rgba(255,255,255,.3)" stroke-width="1.2" marker-end="url(#da)" opacity=".6"/>
+        <line x1="946" y1="214" x2="975" y2="197" stroke="rgba(255,255,255,.3)" stroke-width="1.2" marker-end="url(#da)" opacity=".6"/>
+        <line x1="946" y1="270" x2="975" y2="257" stroke="rgba(255,255,255,.3)" stroke-width="1.2" marker-end="url(#da)" opacity=".6"/>
+        <line x1="946" y1="326" x2="975" y2="317" stroke="rgba(255,255,255,.3)" stroke-width="1.2" marker-end="url(#da)" opacity=".5"/>
+
+        <!-- Flow annotation labels -->
+        <rect x="373" y="455" width="120" height="20" rx="2" fill="rgba(26,115,232,.12)" stroke="rgba(26,115,232,.3)" stroke-width="1"/>
+        <text x="433" y="469" fill="#1A73E8" font-size="8" font-weight="600" text-anchor="middle">T+0 · Real-time events</text>
+        <rect x="508" y="455" width="120" height="20" rx="2" fill="rgba(204,0,0,.12)" stroke="rgba(204,0,0,.3)" stroke-width="1"/>
+        <text x="568" y="469" fill="#FF6060" font-size="8" font-weight="600" text-anchor="middle">T+1 · Nightly Shapley run</text>
+        <rect x="648" y="455" width="120" height="20" rx="2" fill="rgba(52,168,83,.12)" stroke="rgba(52,168,83,.3)" stroke-width="1"/>
+        <text x="708" y="469" fill="#34A853" font-size="8" font-weight="600" text-anchor="middle">T+1 · Looker PDT refresh</text>
+        <rect x="790" y="455" width="120" height="20" rx="2" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+        <text x="850" y="469" fill="rgba(255,255,255,.6)" font-size="8" font-weight="600" text-anchor="middle">T+1 · Reports distributed</text>
+      </svg>
+
+      <!-- Legend row -->
+      <div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-top:20px;">
+        <div style="display:flex;align-items:center;gap:7px;font-size:11px;color:rgba(255,255,255,.55);"><div style="width:28px;height:2px;background:#1A73E8;"></div>Google / GA4 signals</div>
+        <div style="display:flex;align-items:center;gap:7px;font-size:11px;color:rgba(255,255,255,.55);"><div style="width:28px;height:2px;background:#34A853;"></div>Consent-filtered flow</div>
+        <div style="display:flex;align-items:center;gap:7px;font-size:11px;color:rgba(255,255,255,.55);"><div style="width:28px;height:2px;background:#CC0000;border-top:2px dashed #CC0000;"></div>Shapley attribution</div>
+        <div style="display:flex;align-items:center;gap:7px;font-size:11px;color:rgba(255,255,255,.55);"><div style="width:28px;height:2px;background:#FBBC04;"></div>Batch ETL</div>
+        <div style="display:flex;align-items:center;gap:7px;font-size:11px;color:rgba(255,255,255,.55);"><div style="width:10px;height:10px;border-radius:50%;background:#34A853;"></div>Live node</div>
+      </div>
+    </div>
+
     <div class="divider"></div>
     <div class="slabel">Channel Coverage Matrix</div>
-    <h2 class="sh2">Omni-channel Coverage <em>by Signal Type</em></h2>
+    <h2 class="sh2">Omni-channel Signal Coverage <em>by Platform</em></h2>
     <div style="overflow-x:auto;">
       <div class="ch-matrix" style="min-width:660px;">
         <div class="ch-cell hdr">Channel</div><div class="ch-cell hdr">Signal</div><div class="ch-cell hdr">Identity</div><div class="ch-cell hdr">Attribution</div><div class="ch-cell hdr">Looker</div><div class="ch-cell hdr">Status</div>
-        <div class="ch-cell sub">Paid Search</div><div class="ch-cell" style="font-size:11px;color:var(--mid);">GA4/GCLID</div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">Customer ID</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">Data-driven</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">Live</div></div><div class="ch-cell"><span class="rag rag-live" style="font-size:10px;padding:2px 8px;">Live</span></div>
-        <div class="ch-cell sub">Paid Social</div><div class="ch-cell" style="font-size:11px;color:var(--mid);">CAPI/S2S</div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">Hashed email</div></div><div class="ch-cell"><div class="ch-dot ch-part"></div><div class="ch-lbl">Last-click (interim)</div></div><div class="ch-cell"><div class="ch-dot ch-part"></div><div class="ch-lbl">WIP</div></div><div class="ch-cell"><span class="rag rag-wip" style="font-size:10px;padding:2px 8px;">WIP</span></div>
-        <div class="ch-cell sub">Programmatic</div><div class="ch-cell" style="font-size:11px;color:var(--mid);">DV360/CM360</div><div class="ch-cell"><div class="ch-dot ch-part"></div><div class="ch-lbl">Cookie-less WIP</div></div><div class="ch-cell"><div class="ch-dot ch-part"></div><div class="ch-lbl">View-through</div></div><div class="ch-cell"><div class="ch-dot ch-part"></div><div class="ch-lbl">WIP</div></div><div class="ch-cell"><span class="rag rag-wip" style="font-size:10px;padding:2px 8px;">WIP</span></div>
-        <div class="ch-cell sub">App (iOS)</div><div class="ch-cell" style="font-size:11px;color:var(--mid);">SKAN 4.0/MMP</div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">SKAN compliant</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">SKAN model</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">Live</div></div><div class="ch-cell"><span class="rag rag-live" style="font-size:10px;padding:2px 8px;">Live</span></div>
-        <div class="ch-cell sub">App (Android)</div><div class="ch-cell" style="font-size:11px;color:var(--mid);">MMP/Firebase</div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">GAID (consented)</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">MMP model</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">Live</div></div><div class="ch-cell"><span class="rag rag-live" style="font-size:10px;padding:2px 8px;">Live</span></div>
-        <div class="ch-cell sub">Offline/Store</div><div class="ch-cell" style="font-size:11px;color:var(--mid);">POS/Call</div><div class="ch-cell"><div class="ch-dot ch-part"></div><div class="ch-lbl">Customer ID WIP</div></div><div class="ch-cell"><div class="ch-dot ch-none"></div><div class="ch-lbl">Not yet</div></div><div class="ch-cell"><div class="ch-dot ch-none"></div><div class="ch-lbl">Not yet</div></div><div class="ch-cell"><span class="rag rag-concept" style="font-size:10px;padding:2px 8px;">Concept</span></div>
-        <div class="ch-cell sub">TV / Linear</div><div class="ch-cell" style="font-size:11px;color:var(--mid);">Econometrics</div><div class="ch-cell"><div class="ch-dot ch-part"></div><div class="ch-lbl">Panel-based</div></div><div class="ch-cell"><div class="ch-dot ch-part"></div><div class="ch-lbl">MMM only</div></div><div class="ch-cell"><div class="ch-dot ch-part"></div><div class="ch-lbl">Via Econ</div></div><div class="ch-cell"><span class="rag rag-wip" style="font-size:10px;padding:2px 8px;">WIP</span></div>
+        <div class="ch-cell sub">Paid Search</div><div class="ch-cell" style="font-size:10px;color:var(--mid);font-family:'JetBrains Mono',monospace;">GA4/GCLID</div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">customer_id</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">Data-driven</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">PDT live</div></div><div class="ch-cell"><span class="rag rag-live" style="font-size:10px;padding:2px 8px;">Live</span></div>
+        <div class="ch-cell sub">Paid Social</div><div class="ch-cell" style="font-size:10px;color:var(--mid);font-family:'JetBrains Mono',monospace;">CAPI S2S</div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">Hashed email</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">Shapley model</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">PDT live</div></div><div class="ch-cell"><span class="rag rag-live" style="font-size:10px;padding:2px 8px;">Live</span></div>
+        <div class="ch-cell sub">Programmatic</div><div class="ch-cell" style="font-size:10px;color:var(--mid);font-family:'JetBrains Mono',monospace;">DV360/CM360</div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">customer_id</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">View + click</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">PDT live</div></div><div class="ch-cell"><span class="rag rag-live" style="font-size:10px;padding:2px 8px;">Live</span></div>
+        <div class="ch-cell sub">App (iOS)</div><div class="ch-cell" style="font-size:10px;color:var(--mid);font-family:'JetBrains Mono',monospace;">SKAN 4.0</div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">SKAN compliant</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">SKAN model</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">PDT live</div></div><div class="ch-cell"><span class="rag rag-live" style="font-size:10px;padding:2px 8px;">Live</span></div>
+        <div class="ch-cell sub">App (Android)</div><div class="ch-cell" style="font-size:10px;color:var(--mid);font-family:'JetBrains Mono',monospace;">MMP/Firebase</div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">GAID consented</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">MMP model</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">PDT live</div></div><div class="ch-cell"><span class="rag rag-live" style="font-size:10px;padding:2px 8px;">Live</span></div>
+        <div class="ch-cell sub">Offline/Store</div><div class="ch-cell" style="font-size:10px;color:var(--mid);font-family:'JetBrains Mono',monospace;">POS CSV</div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">customer_id</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">Offline-to-online</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">PDT live</div></div><div class="ch-cell"><span class="rag rag-live" style="font-size:10px;padding:2px 8px;">Live</span></div>
+        <div class="ch-cell sub">TV / Linear</div><div class="ch-cell" style="font-size:10px;color:var(--mid);font-family:'JetBrains Mono',monospace;">GRP / Econ</div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">Panel mapped</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">MMM + Shapley</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">mmm_base live</div></div><div class="ch-cell"><span class="rag rag-live" style="font-size:10px;padding:2px 8px;">Live</span></div>
+        <div class="ch-cell sub">Pinterest</div><div class="ch-cell" style="font-size:10px;color:var(--mid);font-family:'JetBrains Mono',monospace;">Pinterest API</div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">Hashed email</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">Shapley model</div></div><div class="ch-cell"><div class="ch-dot ch-full"></div><div class="ch-lbl">PDT live</div></div><div class="ch-cell"><span class="rag rag-live" style="font-size:10px;padding:2px 8px;">Live</span></div>
       </div>
-    </div>
-    <div class="divider"></div>
-    <div class="slabel">Looker Architecture</div>
-    <h2 class="sh2">Looker as <em>Single Source of Truth</em></h2>
-    <p class="ssub">Looker connects natively to BigQuery — no data copies, no ETL lag. LookML defines all metric definitions centrally.</p>
-    <div style="display:flex;flex-direction:column;gap:2px;">
-      <div class="acc"><div class="acc-hdr" onclick="toggleAcc(this)"><h4>📐 LookML Model Structure</h4><span class="acc-arrow">+</span></div><div class="acc-body"><p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:12px;">Three core Explores: <strong>Customer Journey</strong> (touchpoint-level), <strong>Campaign Performance</strong> (channel/campaign level), <strong>Product Conversion</strong> (product × channel × segment). All metrics defined once in LookML.</p><div style="background:var(--ink-2);padding:16px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#60A0FF;line-height:1.8;">explore: customer_journey {<br>&nbsp;&nbsp;join: attribution_model { type: left_outer }<br>&nbsp;&nbsp;join: channel_spend { type: left_outer }<br>&nbsp;&nbsp;join: product_conversion { type: left_outer }<br>&nbsp;&nbsp;join: clv_scores { type: left_outer }<br>}</div></div></div>
-      <div class="acc"><div class="acc-hdr" onclick="toggleAcc(this)"><h4>🔗 BigQuery → Looker Data Flow</h4><span class="acc-arrow">+</span></div><div class="acc-body"><p style="font-size:13px;color:var(--mid);line-height:1.7;">BigQuery materialised views refresh nightly via scheduled queries. Looker connects via read-only service account. PDTs (Persistent Derived Tables) pre-aggregate heavy attribution calculations so dashboards load in &lt;3s. Looker Scheduler distributes daily performance reports automatically to channel teams.</p></div></div>
-      <div class="acc"><div class="acc-hdr" onclick="toggleAcc(this)"><h4>📊 Key Attribution Dashboards in Looker</h4><span class="acc-arrow">+</span></div><div class="acc-body"><ul class="sec-list" style="margin-top:0;"><li><strong>Cross-Channel Attribution</strong> — Shapley credit by channel, campaign, creative. Filters by product, segment, date.</li><li><strong>Customer Journey Explorer</strong> — Touch path visualisation showing sequence of channels before conversion.</li><li><strong>Budget Optimiser View</strong> — Marginal ROAS by channel. Surfaces over/under-invested channels.</li><li><strong>Audience Performance</strong> — CLV segment performance across channels. LTV × channel interaction.</li><li><strong>Econometrics Input Feed</strong> — Standardised output for Marketing Mix Model. Daily spend, impressions, conversions.</li></ul></div></div>
-      <div class="acc"><div class="acc-hdr" onclick="toggleAcc(this)"><h4>⚡ How Shapley Attribution Works in BigQuery</h4><span class="acc-arrow">+</span></div><div class="acc-body"><p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:12px;">Shapley value attribution uses cooperative game theory to distribute conversion credit across all channels in a customer's journey. Each channel's <em>marginal contribution</em> is measured — how much worse the conversion rate would be without that touchpoint.</p><p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:12px;">In BigQuery, this runs as a stored procedure evaluating all 2ⁿ channel subsets and computing average marginal contribution per channel. Results written to <code style="font-family:'JetBrains Mono',monospace;background:var(--bg-2);padding:2px 6px;font-size:12px;">attribution_results</code> table and exposed in Looker.</p><div style="background:var(--bg-2);padding:16px;border-left:3px solid var(--bain-red);"><div style="font-size:11px;font-weight:700;color:var(--bain-red);letter-spacing:1px;margin-bottom:8px;">WHY SHAPLEY &gt; LAST-CLICK</div><p style="font-size:12px;color:var(--mid);line-height:1.7;">In telecoms, average customer journeys span 8–12 touchpoints over 30–60 days before contract conversion. Last-click over-credits brand search and under-credits prospecting (TV, social, display). Shapley corrects this — typically shifting 15–25% of attributed budget from lower-funnel to upper-funnel when first deployed.</p></div></div></div>
     </div>
   </div>
 </div>
