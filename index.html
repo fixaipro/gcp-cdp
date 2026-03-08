@@ -170,6 +170,7 @@ header{background:var(--ink);color:#fff;padding:0 48px;position:sticky;top:0;z-i
     <div class="tab" onclick="showTab('security',this)">04 Security &amp; Privacy</div>
     <div class="tab" onclick="showTab('attribution',this)">05 Omni-channel Attribution</div>
     <div class="tab" onclick="showTab('prereqs',this)">06 Pre-requisites</div>
+    <div class="tab" onclick="showTab('platforms',this)">07 Meta &amp; Google Attribution</div>
   </div>
 </div>
 
@@ -787,7 +788,7 @@ header{background:var(--ink);color:#fff;padding:0 48px;position:sticky;top:0;z-i
       <div class="acc-body">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
           <div>
-            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:12px;">Looker connects to BigQuery via a dedicated service account (<code style="font-family:'JetBrains Mono',monospace;background:var(--bg-2);padding:2px 5px;font-size:11px;">looker-bq-reader@project.iam</code>) with <strong>BigQuery Data Viewer</strong> and <strong>BigQuery Job User</strong> roles only — no write access.</p>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:12px;">Looker connects to BigQuery via a dedicated service account (<code style="font-family:'JetBrains Mono',monospace;background:var(--bg-2);padding:2px 5px;font-size:11px;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b7dbd8d8dcd2c59ad5c69ac5d2d6d3d2c5f7c7c5d8ddd2d4c399ded6da">[email&#160;protected]</a></code>) with <strong>BigQuery Data Viewer</strong> and <strong>BigQuery Job User</strong> roles only — no write access.</p>
             <ul class="sec-list">
               <li>PDT: <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">attribution_by_channel_day</code> — pre-aggregated Shapley totals by channel + date. Rebuilds nightly at 05:00 UTC.</li>
               <li>PDT: <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">journey_paths_top100</code> — top 100 converting path sequences. Used in Journey Explorer.</li>
@@ -1283,7 +1284,557 @@ header{background:var(--ink);color:#fff;padding:0 48px;position:sticky;top:0;z-i
   </div>
 </div>
 
-<script>
+
+<!-- ══ PANEL 7: META & GOOGLE PLATFORM ATTRIBUTION ══ -->
+<div id="panel-platforms" class="panel">
+
+  <!-- HERO -->
+  <div style="background:var(--ink-2);padding:56px 48px;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(26,115,232,.1),transparent 60%);"></div>
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;">
+      <div>
+        <div class="eyebrow">Platform Attribution · Meta &amp; Google</div>
+        <h1 style="font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,50px);font-weight:700;line-height:1.1;color:#fff;margin-bottom:18px;">Closing the Loop: <em style="color:var(--bain-red)">Online Ads → Offline Conversions</em></h1>
+        <p style="font-size:15px;font-weight:300;color:rgba(255,255,255,.6);line-height:1.8;margin-bottom:24px;">Every sale that begins with a Meta or Google ad impression — whether it closes in-store, over the phone, or online — stitched back to the originating campaign using a three-layer identity key: email → phone → household address.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 16px;background:rgba(26,115,232,.2);color:#60A8FF;border:1px solid rgba(26,115,232,.4);">Google Enhanced Conversions</span>
+          <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 16px;background:rgba(24,119,242,.2);color:#80C0FF;border:1px solid rgba(24,119,242,.4);">Meta CAPI Offline</span>
+          <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 16px;background:rgba(52,168,83,.15);color:#5DC878;border:1px solid rgba(52,168,83,.3);">BigQuery Identity Graph</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;background:rgba(255,255,255,.06);">
+        <div style="background:rgba(255,255,255,.03);padding:24px 20px;text-align:center;">
+          <div style="font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:var(--bain-red);line-height:1;">3</div>
+          <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.6);margin-top:6px;letter-spacing:.5px;">ID Layers</div>
+          <div style="font-size:11px;font-weight:300;color:rgba(255,255,255,.35);margin-top:3px;">Email · Phone · Address</div>
+        </div>
+        <div style="background:rgba(255,255,255,.03);padding:24px 20px;text-align:center;">
+          <div style="font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:var(--bain-red);line-height:1;">28d</div>
+          <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.6);margin-top:6px;letter-spacing:.5px;">Attribution Window</div>
+          <div style="font-size:11px;font-weight:300;color:rgba(255,255,255,.35);margin-top:3px;">Meta offline default</div>
+        </div>
+        <div style="background:rgba(255,255,255,.03);padding:24px 20px;text-align:center;">
+          <div style="font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:var(--bain-red);line-height:1;">90d</div>
+          <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.6);margin-top:6px;letter-spacing:.5px;">Lookback Window</div>
+          <div style="font-size:11px;font-weight:300;color:rgba(255,255,255,.35);margin-top:3px;">Google Enhanced default</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sw" style="padding-top:48px;">
+
+    <!-- ── IDENTITY KEY HIERARCHY ── -->
+    <div class="slabel">Identity Stitching Architecture</div>
+    <h2 class="sh2">Three-Layer Identity Key <em>Hierarchy</em></h2>
+    <p class="ssub">The matching confidence increases when multiple keys are present. BigQuery resolves identity before passing hashed signals to both platforms.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;background:var(--border);margin-bottom:48px;">
+      <div style="background:var(--white);padding:28px 28px 28px;border-top:4px solid var(--bain-red);position:relative;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--bain-red);margin-bottom:8px;">Layer 1 · Primary Key</div>
+        <div style="font-size:28px;margin-bottom:10px;">✉️</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:10px;">Email Address</h3>
+        <p style="font-size:13px;font-weight:300;color:var(--mid);line-height:1.7;margin-bottom:14px;">Normalised lowercase, SHA-256 hashed before leaving BigQuery. Highest deterministic match quality on both Google (signed-in Google Account match) and Meta (Identity Graph match). Primary key for all three conversion channels.</p>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;padding:6px 10px;background:rgba(26,115,232,.06);border:1px solid rgba(26,115,232,.15);">
+            <span style="font-weight:600;color:var(--blue);">Google match rate</span><span style="font-family:'JetBrains Mono',monospace;color:var(--green);font-weight:700;">70–85%</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;padding:6px 10px;background:rgba(24,119,242,.06);border:1px solid rgba(24,119,242,.15);">
+            <span style="font-weight:600;color:#1877F2;">Meta EMQ score</span><span style="font-family:'JetBrains Mono',monospace;color:var(--green);font-weight:700;">Good–Great</span>
+          </div>
+        </div>
+      </div>
+      <div style="background:var(--white);padding:28px;border-top:4px solid var(--amber);">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:8px;">Layer 2 · Secondary Key</div>
+        <div style="font-size:28px;margin-bottom:10px;">📱</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:10px;">Phone Number</h3>
+        <p style="font-size:13px;font-weight:300;color:var(--mid);line-height:1.7;margin-bottom:14px;">Normalised E.164 format (+44XXXXXXXXXX), SHA-256 hashed. Critical for call centre conversions where email may not be captured at the point of sale. Significantly boosts EMQ when combined with email — Meta supports up to 5 identifier parameters per event.</p>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;padding:6px 10px;background:rgba(26,115,232,.06);border:1px solid rgba(26,115,232,.15);">
+            <span style="font-weight:600;color:var(--blue);">Google uplift</span><span style="font-family:'JetBrains Mono',monospace;color:var(--amber);font-weight:700;">+10–15%</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;padding:6px 10px;background:rgba(24,119,242,.06);border:1px solid rgba(24,119,242,.15);">
+            <span style="font-weight:600;color:#1877F2;">Meta uplift</span><span style="font-family:'JetBrains Mono',monospace;color:var(--amber);font-weight:700;">+12–18%</span>
+          </div>
+        </div>
+      </div>
+      <div style="background:var(--white);padding:28px;border-top:4px solid var(--mid);">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mid);margin-bottom:8px;">Layer 3 · Tertiary Key</div>
+        <div style="font-size:28px;margin-bottom:10px;">🏠</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:10px;">Household Address</h3>
+        <p style="font-size:13px;font-weight:300;color:var(--mid);line-height:1.7;margin-bottom:14px;">First name, last name, postcode, city, country — each hashed separately. Used as a probabilistic tie-breaker when email and phone are absent or yield low-confidence matches. Crucial for household-level frequency capping and converged broadband + mobile cross-sell campaigns.</p>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;padding:6px 10px;background:rgba(26,115,232,.06);border:1px solid rgba(26,115,232,.15);">
+            <span style="font-weight:600;color:var(--blue);">Google: postal match</span><span style="font-family:'JetBrains Mono',monospace;color:var(--mid);font-weight:700;">Probabilistic</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;padding:6px 10px;background:rgba(24,119,242,.06);border:1px solid rgba(24,119,242,.15);">
+            <span style="font-weight:600;color:#1877F2;">Meta: fn/ln/zip</span><span style="font-family:'JetBrains Mono',monospace;color:var(--mid);font-weight:700;">Supplementary</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── JOURNEY SELECTOR ── -->
+    <div class="slabel">Interactive Journey Diagrams</div>
+    <h2 class="sh2">Select a Conversion Journey <em>to Explore</em></h2>
+    <p class="ssub">Choose a channel to see the full identity stitching and attribution flow for that specific conversion path.</p>
+
+    <!-- Journey toggle buttons -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;background:var(--border);margin-bottom:32px;" id="journey-btns">
+      <div class="journey-btn active" onclick="showJourney('online',this)" style="background:var(--bain-red);padding:24px 20px;cursor:pointer;text-align:center;transition:background .2s;">
+        <div style="font-size:28px;margin-bottom:8px;">🛒</div>
+        <div style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#fff;">Online Purchase</div>
+        <div style="font-size:11px;font-weight:300;color:rgba(255,255,255,.7);margin-top:4px;">Ad click → Web/App checkout</div>
+      </div>
+      <div class="journey-btn" onclick="showJourney('store',this)" style="background:var(--white);padding:24px 20px;cursor:pointer;text-align:center;transition:background .2s;">
+        <div style="font-size:28px;margin-bottom:8px;">🏪</div>
+        <div style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mid);">In-Store Purchase</div>
+        <div style="font-size:11px;font-weight:300;color:var(--mid);margin-top:4px;">Ad exposure → Physical store</div>
+      </div>
+      <div class="journey-btn" onclick="showJourney('call',this)" style="background:var(--white);padding:24px 20px;cursor:pointer;text-align:center;transition:background .2s;">
+        <div style="font-size:28px;margin-bottom:8px;">📞</div>
+        <div style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mid);">Call Centre</div>
+        <div style="font-size:11px;font-weight:300;color:var(--mid);margin-top:4px;">Ad click → Phone conversion</div>
+      </div>
+    </div>
+
+    <!-- ── JOURNEY: ONLINE ── -->
+    <div id="journey-online" class="journey-panel">
+      <div style="background:var(--ink-2);padding:40px;overflow-x:auto;">
+        <svg viewBox="0 0 1040 300" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3',sans-serif" style="width:100%;min-width:760px;display:block;">
+          <defs>
+            <marker id="ja" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="rgba(255,255,255,.5)"/></marker>
+            <marker id="ja-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#CC0000"/></marker>
+            <marker id="ja-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1A73E8"/></marker>
+            <marker id="ja-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#34A853"/></marker>
+            <marker id="ja-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1877F2"/></marker>
+          </defs>
+          <rect width="1040" height="300" fill="#0D1520"/>
+          <pattern id="jg" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M28 0L0 0 0 28" fill="none" stroke="rgba(255,255,255,.025)" stroke-width="1"/></pattern>
+          <rect width="1040" height="300" fill="url(#jg)"/>
+
+          <!-- Step labels -->
+          <text x="65"  y="18" fill="rgba(255,255,255,.3)" font-size="8" font-weight="700" letter-spacing="1.5" text-anchor="middle">AD EXPOSURE</text>
+          <text x="220" y="18" fill="rgba(255,255,255,.3)" font-size="8" font-weight="700" letter-spacing="1.5" text-anchor="middle">CLICK + ID CAPTURE</text>
+          <text x="400" y="18" fill="rgba(255,255,255,.3)" font-size="8" font-weight="700" letter-spacing="1.5" text-anchor="middle">CONVERSION EVENT</text>
+          <text x="590" y="18" fill="rgba(255,255,255,.3)" font-size="8" font-weight="700" letter-spacing="1.5" text-anchor="middle">BIGQUERY IDENTITY</text>
+          <text x="780" y="18" fill="rgba(255,255,255,.3)" font-size="8" font-weight="700" letter-spacing="1.5" text-anchor="middle">PLATFORM MATCHING</text>
+          <text x="970" y="18" fill="rgba(255,255,255,.3)" font-size="8" font-weight="700" letter-spacing="1.5" text-anchor="middle">ATTRIBUTION</text>
+
+          <!-- ROW 1: Google -->
+          <rect x="8" y="32" width="114" height="52" rx="3" fill="#0D1F35" stroke="#1A73E8" stroke-width="1.5"/>
+          <text x="65" y="52" fill="#1A73E8" font-size="9" font-weight="700" text-anchor="middle">GOOGLE SEARCH AD</text>
+          <text x="65" y="67" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">Performance Max</text>
+          <text x="65" y="80" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">Shopping · Discovery</text>
+
+          <rect x="153" y="32" width="130" height="52" rx="3" fill="#0D1F35" stroke="#1A73E8" stroke-width="1.5"/>
+          <text x="218" y="52" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">GCLID + GBRAID/WBRAID</text>
+          <text x="218" y="68" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Appended to landing URL</text>
+          <text x="218" y="81" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Stored in CRM + cookie</text>
+
+          <rect x="315" y="32" width="154" height="52" rx="3" fill="#0D1F35" stroke="#1A73E8" stroke-width="1.5"/>
+          <text x="392" y="50" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">CHECKOUT COMPLETE</text>
+          <text x="392" y="66" fill="#5DC878" font-size="7.5" font-weight="700" text-anchor="middle">✓ email · phone captured</text>
+          <text x="392" y="80" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">GCLID linked to order_id</text>
+
+          <rect x="500" y="32" width="154" height="52" rx="3" fill="#071830" stroke="#1A73E8" stroke-width="2"/>
+          <text x="577" y="51" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">SHA-256 HASH</text>
+          <text x="577" y="66" fill="#5DC878" font-size="7.5" text-anchor="middle">email → h(email)</text>
+          <text x="577" y="80" fill="rgba(255,255,255,.4)" font-size="7.5" text-anchor="middle">phone → h(phone)</text>
+
+          <rect x="686" y="32" width="174" height="52" rx="3" fill="#0D1F35" stroke="#1A73E8" stroke-width="1.5"/>
+          <text x="773" y="51" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">ENHANCED CONVERSIONS</text>
+          <text x="773" y="66" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">GCLID + h(email) → Google API</text>
+          <text x="773" y="80" fill="#5DC878" font-size="7.5" text-anchor="middle">Match: signed-in Google Account</text>
+
+          <rect x="892" y="32" width="140" height="52" rx="3" fill="#0D2814" stroke="#34A853" stroke-width="1.5"/>
+          <text x="962" y="51" fill="#5DC878" font-size="8.5" font-weight="700" text-anchor="middle">✓ ATTRIBUTED</text>
+          <text x="962" y="66" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Campaign · Ad Group</text>
+          <text x="962" y="80" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Keyword · Smart Bidding</text>
+
+          <!-- ROW 2: Meta -->
+          <rect x="8" y="130" width="114" height="52" rx="3" fill="#0A1428" stroke="#1877F2" stroke-width="1.5"/>
+          <text x="65" y="150" fill="#1877F2" font-size="9" font-weight="700" text-anchor="middle">META / INSTAGRAM AD</text>
+          <text x="65" y="165" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">Feed · Reels · Stories</text>
+          <text x="65" y="178" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">Advantage+ Shopping</text>
+
+          <rect x="153" y="130" width="130" height="52" rx="3" fill="#0A1428" stroke="#1877F2" stroke-width="1.5"/>
+          <text x="218" y="150" fill="#80B8FF" font-size="8.5" font-weight="700" text-anchor="middle">FBC + FBP COOKIE</text>
+          <text x="218" y="165" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Click ID + Browser ID</text>
+          <text x="218" y="178" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Stored server-side (CAPI)</text>
+
+          <rect x="315" y="130" width="154" height="52" rx="3" fill="#0A1428" stroke="#1877F2" stroke-width="1.5"/>
+          <text x="392" y="148" fill="#80B8FF" font-size="8.5" font-weight="700" text-anchor="middle">PURCHASE EVENT</text>
+          <text x="392" y="164" fill="#5DC878" font-size="7.5" font-weight="700" text-anchor="middle">✓ email · phone · address</text>
+          <text x="392" y="178" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">FBC linked to order_id</text>
+
+          <rect x="500" y="130" width="154" height="52" rx="3" fill="#071830" stroke="#1A73E8" stroke-width="2"/>
+          <text x="577" y="149" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">SHA-256 HASH (3 keys)</text>
+          <text x="577" y="164" fill="#5DC878" font-size="7.5" text-anchor="middle">email + phone</text>
+          <text x="577" y="178" fill="rgba(255,255,255,.4)" font-size="7.5" text-anchor="middle">fn + ln + postcode</text>
+
+          <rect x="686" y="130" width="174" height="52" rx="3" fill="#0A1428" stroke="#1877F2" stroke-width="1.5"/>
+          <text x="773" y="149" fill="#80B8FF" font-size="8.5" font-weight="700" text-anchor="middle">META CAPI · DATASET ID</text>
+          <text x="773" y="164" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">S2S → Meta Identity Graph</text>
+          <text x="773" y="178" fill="#5DC878" font-size="7.5" text-anchor="middle">EMQ: Great (5 params sent)</text>
+
+          <rect x="892" y="130" width="140" height="52" rx="3" fill="#0D2814" stroke="#34A853" stroke-width="1.5"/>
+          <text x="962" y="149" fill="#5DC878" font-size="8.5" font-weight="700" text-anchor="middle">✓ ATTRIBUTED</text>
+          <text x="962" y="164" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">28-day click window</text>
+          <text x="962" y="178" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Advantage+ optimised</text>
+
+          <!-- BQ centre label -->
+          <rect x="498" y="90" width="158" height="26" rx="3" fill="rgba(26,115,232,.15)" stroke="rgba(26,115,232,.4)" stroke-width="1"/>
+          <text x="577" y="107" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">BIGQUERY IDENTITY GRAPH</text>
+
+          <!-- Dedup note -->
+          <rect x="686" y="192" width="174" height="36" rx="3" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+          <text x="773" y="207" fill="rgba(255,255,255,.5)" font-size="8" font-weight="600" text-anchor="middle">Deduplication: 7-day window (Meta)</text>
+          <text x="773" y="221" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle">order_id as dedup key (both platforms)</text>
+
+          <!-- Timeline bar -->
+          <rect x="8" y="250" width="1024" height="36" rx="3" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+          <text x="20" y="265" fill="rgba(255,255,255,.4)" font-size="7.5" font-weight="600">T=0</text>
+          <text x="20" y="278" fill="rgba(255,255,255,.3)" font-size="7">Ad impression</text>
+          <text x="200" y="265" fill="rgba(255,255,255,.4)" font-size="7.5" font-weight="600">T+seconds</text>
+          <text x="200" y="278" fill="rgba(255,255,255,.3)" font-size="7">Click + GCLID/FBC stored</text>
+          <text x="380" y="265" fill="rgba(255,255,255,.4)" font-size="7.5" font-weight="600">T+minutes/hours</text>
+          <text x="380" y="278" fill="rgba(255,255,255,.3)" font-size="7">Checkout · server event fires</text>
+          <text x="570" y="265" fill="rgba(255,255,255,.4)" font-size="7.5" font-weight="600">T+minutes</text>
+          <text x="570" y="278" fill="rgba(255,255,255,.3)" font-size="7">BQ hash + identity resolve</text>
+          <text x="740" y="265" fill="rgba(255,255,255,.4)" font-size="7.5" font-weight="600">T+&lt;1hr (real-time)</text>
+          <text x="740" y="278" fill="rgba(255,255,255,.3)" font-size="7">S2S push to Meta/Google API</text>
+          <text x="920" y="265" fill="rgba(255,255,255,.4)" font-size="7.5" font-weight="600">T+hours</text>
+          <text x="920" y="278" fill="rgba(255,255,255,.3)" font-size="7">Reported in Ads Manager</text>
+
+          <!-- Flow arrows Google row -->
+          <line x1="122" y1="58" x2="153" y2="58" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#ja-b)" opacity=".8"/>
+          <line x1="283" y1="58" x2="315" y2="58" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#ja-b)" opacity=".8"/>
+          <line x1="469" y1="58" x2="500" y2="58" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#ja-b)" opacity=".8"/>
+          <line x1="654" y1="58" x2="686" y2="58" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#ja-b)" opacity=".8"/>
+          <line x1="860" y1="58" x2="892" y2="58" stroke="#34A853" stroke-width="1.5" marker-end="url(#ja-g)" opacity=".8"/>
+
+          <!-- Flow arrows Meta row -->
+          <line x1="122" y1="156" x2="153" y2="156" stroke="#1877F2" stroke-width="1.5" marker-end="url(#ja-m)" opacity=".8"/>
+          <line x1="283" y1="156" x2="315" y2="156" stroke="#1877F2" stroke-width="1.5" marker-end="url(#ja-m)" opacity=".8"/>
+          <line x1="469" y1="156" x2="500" y2="156" stroke="#1877F2" stroke-width="1.5" marker-end="url(#ja-m)" opacity=".8"/>
+          <line x1="654" y1="156" x2="686" y2="156" stroke="#1877F2" stroke-width="1.5" marker-end="url(#ja-m)" opacity=".8"/>
+          <line x1="860" y1="156" x2="892" y2="156" stroke="#34A853" stroke-width="1.5" marker-end="url(#ja-g)" opacity=".8"/>
+
+          <!-- Animated dash on BQ stage -->
+          <path d="M469 58 L500 58" stroke="#1A73E8" stroke-width="2.5" stroke-dasharray="5,7" opacity=".9">
+            <animate attributeName="stroke-dashoffset" from="50" to="0" dur="1.2s" repeatCount="indefinite"/>
+          </path>
+          <path d="M469 156 L500 156" stroke="#1877F2" stroke-width="2.5" stroke-dasharray="5,7" opacity=".9">
+            <animate attributeName="stroke-dashoffset" from="50" to="0" dur="1.2s" repeatCount="indefinite"/>
+          </path>
+        </svg>
+      </div>
+      <div class="callout" style="margin-top:0;"><p><strong>Online Journey Key Points:</strong> GCLID is the most deterministic signal for Google — always store it in a cookie + CRM at click time. For Meta, FBC (click ID) + FBP (browser ID) combined with hashed email delivers an EMQ score of <strong>Great</strong>, the highest tier. Using all five parameters (email, phone, first name, last name, postcode) increases Meta's match rate by a further 12–18% vs email alone. Both platforms use order_id for 7-day deduplication to prevent double-counting server + pixel events.</p></div>
+    </div>
+
+    <!-- ── JOURNEY: IN-STORE ── -->
+    <div id="journey-store" class="journey-panel" style="display:none;">
+      <div style="background:var(--ink-2);padding:40px;overflow-x:auto;">
+        <svg viewBox="0 0 1040 310" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3',sans-serif" style="width:100%;min-width:760px;display:block;">
+          <defs>
+            <marker id="sa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="rgba(255,255,255,.5)"/></marker>
+            <marker id="sa-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1A73E8"/></marker>
+            <marker id="sa-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1877F2"/></marker>
+            <marker id="sa-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#34A853"/></marker>
+            <marker id="sa-y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#FBBC04"/></marker>
+          </defs>
+          <rect width="1040" height="310" fill="#0D1520"/>
+          <rect width="1040" height="310" fill="url(#jg)"/>
+
+          <text x="65"  y="18" fill="rgba(255,255,255,.3)" font-size="8" font-weight="700" letter-spacing="1.5" text-anchor="middle">AD EXPOSURE</text>
+          <text x="220" y="18" fill="rgba(255,255,255,.3)" font-size="8" font-weight="700" letter-spacing="1.5" text-anchor="middle">WEBSITE VISIT (pre-store)</text>
+          <text x="400" y="18" fill="rgba(255,255,255,.3)" font-size="8" font-weight="700" letter-spacing="1.5" text-anchor="middle">IN-STORE PURCHASE</text>
+          <text x="590" y="18" fill="rgba(255,255,255,.3)" font-size="8" font-weight="700" letter-spacing="1.5" text-anchor="middle">BIGQUERY MATCH</text>
+          <text x="790" y="18" fill="rgba(255,255,255,.3)" font-size="8" font-weight="700" letter-spacing="1.5" text-anchor="middle">PLATFORM UPLOAD</text>
+          <text x="970" y="18" fill="rgba(255,255,255,.3)" font-size="8" font-weight="700" letter-spacing="1.5" text-anchor="middle">ATTRIBUTION</text>
+
+          <!-- Google row -->
+          <rect x="8" y="32" width="114" height="60" rx="3" fill="#0D1F35" stroke="#1A73E8" stroke-width="1.5"/>
+          <text x="65" y="52" fill="#1A73E8" font-size="9" font-weight="700" text-anchor="middle">GOOGLE AD</text>
+          <text x="65" y="67" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Display · YouTube</text>
+          <text x="65" y="80" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Demand Gen · Search</text>
+
+          <rect x="153" y="32" width="130" height="60" rx="3" fill="#0D1F35" stroke="#1A73E8" stroke-width="1.5"/>
+          <text x="218" y="51" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">GCLID STORED</text>
+          <text x="218" y="66" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Lead form / account login</text>
+          <text x="218" y="80" fill="#FBBC04" font-size="7.5" font-weight="600" text-anchor="middle">⚠ No checkout yet</text>
+
+          <rect x="315" y="32" width="154" height="60" rx="3" fill="#0D1F35" stroke="#34A853" stroke-width="2"/>
+          <text x="392" y="50" fill="#5DC878" font-size="8.5" font-weight="700" text-anchor="middle">POS TRANSACTION</text>
+          <text x="392" y="66" fill="#5DC878" font-size="7.5" font-weight="700" text-anchor="middle">✓ email at till / loyalty card</text>
+          <text x="392" y="80" fill="rgba(255,255,255,.4)" font-size="7.5" text-anchor="middle">Nightly CSV export → GCS</text>
+
+          <rect x="500" y="32" width="154" height="60" rx="3" fill="#071830" stroke="#1A73E8" stroke-width="2"/>
+          <text x="577" y="51" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">IDENTITY JOIN</text>
+          <text x="577" y="66" fill="#5DC878" font-size="7.5" text-anchor="middle">email (L1) → GCLID lookup</text>
+          <text x="577" y="80" fill="rgba(255,255,255,.4)" font-size="7.5" text-anchor="middle">SHA-256 hash applied</text>
+
+          <rect x="686" y="32" width="186" height="60" rx="3" fill="#0D1F35" stroke="#1A73E8" stroke-width="1.5"/>
+          <text x="779" y="51" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">ENHANCED CONV. UPLOAD</text>
+          <text x="779" y="66" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">GCLID + h(email) + order_id</text>
+          <text x="779" y="80" fill="#FBBC04" font-size="7.5" font-weight="600" text-anchor="middle">Upload within 72hrs of sale</text>
+
+          <rect x="904" y="32" width="128" height="60" rx="3" fill="#0D2814" stroke="#34A853" stroke-width="1.5"/>
+          <text x="968" y="52" fill="#5DC878" font-size="8.5" font-weight="700" text-anchor="middle">✓ ATTRIBUTED</text>
+          <text x="968" y="67" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">90-day lookback</text>
+          <text x="968" y="80" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">tROAS bidding update</text>
+
+          <!-- Meta row -->
+          <rect x="8" y="140" width="114" height="60" rx="3" fill="#0A1428" stroke="#1877F2" stroke-width="1.5"/>
+          <text x="65" y="160" fill="#1877F2" font-size="9" font-weight="700" text-anchor="middle">META AD</text>
+          <text x="65" y="175" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Catalogue · DPA</text>
+          <text x="65" y="188" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Retargeting · Reach</text>
+
+          <rect x="153" y="140" width="130" height="60" rx="3" fill="#0A1428" stroke="#1877F2" stroke-width="1.5"/>
+          <text x="218" y="158" fill="#80B8FF" font-size="8.5" font-weight="700" text-anchor="middle">FBC STORED</text>
+          <text x="218" y="173" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Click ID in browser/server</text>
+          <text x="218" y="187" fill="#FBBC04" font-size="7.5" font-weight="600" text-anchor="middle">⚠ User visits, not buys</text>
+
+          <rect x="315" y="140" width="154" height="60" rx="3" fill="#0A1428" stroke="#34A853" stroke-width="2"/>
+          <text x="392" y="158" fill="#5DC878" font-size="8.5" font-weight="700" text-anchor="middle">POS TRANSACTION</text>
+          <text x="392" y="173" fill="#5DC878" font-size="7.5" font-weight="700" text-anchor="middle">✓ email + phone + address</text>
+          <text x="392" y="187" fill="rgba(255,255,255,.4)" font-size="7.5" text-anchor="middle">Max 62 days to upload</text>
+
+          <rect x="500" y="140" width="154" height="60" rx="3" fill="#071830" stroke="#1A73E8" stroke-width="2"/>
+          <text x="577" y="158" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">3-KEY HASH + JOIN</text>
+          <text x="577" y="173" fill="#5DC878" font-size="7.5" text-anchor="middle">email (L1) → FBC lookup</text>
+          <text x="577" y="187" fill="rgba(255,255,255,.4)" font-size="7.5" text-anchor="middle">phone + address fallback</text>
+
+          <rect x="686" y="140" width="186" height="60" rx="3" fill="#0A1428" stroke="#1877F2" stroke-width="1.5"/>
+          <text x="779" y="158" fill="#80B8FF" font-size="8.5" font-weight="700" text-anchor="middle">META CAPI OFFLINE EVENT</text>
+          <text x="779" y="173" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">h(email)+h(phone)+fn+ln+zip</text>
+          <text x="779" y="187" fill="#5DC878" font-size="7.5" font-weight="600" text-anchor="middle">EMQ: Great · 28d window</text>
+
+          <rect x="904" y="140" width="128" height="60" rx="3" fill="#0D2814" stroke="#34A853" stroke-width="1.5"/>
+          <text x="968" y="158" fill="#5DC878" font-size="8.5" font-weight="700" text-anchor="middle">✓ ATTRIBUTED</text>
+          <text x="968" y="173" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Offline Purchase event</text>
+          <text x="968" y="187" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Advantage+ signal fed</text>
+
+          <!-- BQ badge -->
+          <rect x="498" y="108" width="158" height="22" rx="3" fill="rgba(26,115,232,.15)" stroke="rgba(26,115,232,.4)" stroke-width="1"/>
+          <text x="577" y="123" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">BIGQUERY · OFFLINE BRIDGE</text>
+
+          <!-- Important note: no GCLID direct -->
+          <rect x="8" y="218" width="460" height="56" rx="3" fill="rgba(251,188,4,.07)" stroke="rgba(251,188,4,.25)" stroke-width="1"/>
+          <text x="20" y="236" fill="#FBBC04" font-size="8.5" font-weight="700">⚠  KEY IN-STORE CHALLENGE:</text>
+          <text x="20" y="252" fill="rgba(255,255,255,.55)" font-size="8">GCLID is rarely present — user clicked an ad on a different device or session days/weeks earlier.</text>
+          <text x="20" y="266" fill="rgba(255,255,255,.55)" font-size="8">Email (Layer 1) is the critical bridge key. Loyalty card / email at POS capture rate directly determines attribution match rate.</text>
+
+          <rect x="492" y="218" width="460" height="56" rx="3" fill="rgba(52,168,83,.07)" stroke="rgba(52,168,83,.25)" stroke-width="1"/>
+          <text x="504" y="236" fill="#5DC878" font-size="8.5" font-weight="700">✓  BEST PRACTICE:</text>
+          <text x="504" y="252" fill="rgba(255,255,255,.55)" font-size="8">Always prompt for email at POS (loyalty signup, receipt by email). Target 60%+ email capture rate.</text>
+          <text x="504" y="266" fill="rgba(255,255,255,.55)" font-size="8">Send all 5 Meta params. Use phone as L2 fallback. Upload within same business day for highest match rates.</text>
+
+          <!-- Arrows -->
+          <line x1="122" y1="62" x2="153" y2="62" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#sa-b)" opacity=".8"/>
+          <line x1="283" y1="62" x2="315" y2="62" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#sa-b)" opacity=".8"/>
+          <line x1="469" y1="62" x2="500" y2="62" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#sa-b)" opacity=".8"/>
+          <line x1="654" y1="62" x2="686" y2="62" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#sa-b)" opacity=".8"/>
+          <line x1="872" y1="62" x2="904" y2="62" stroke="#34A853" stroke-width="1.5" marker-end="url(#sa-g)" opacity=".8"/>
+          <line x1="122" y1="170" x2="153" y2="170" stroke="#1877F2" stroke-width="1.5" marker-end="url(#sa-m)" opacity=".8"/>
+          <line x1="283" y1="170" x2="315" y2="170" stroke="#1877F2" stroke-width="1.5" marker-end="url(#sa-m)" opacity=".8"/>
+          <line x1="469" y1="170" x2="500" y2="170" stroke="#1877F2" stroke-width="1.5" marker-end="url(#sa-m)" opacity=".8"/>
+          <line x1="654" y1="170" x2="686" y2="170" stroke="#1877F2" stroke-width="1.5" marker-end="url(#sa-m)" opacity=".8"/>
+          <line x1="872" y1="170" x2="904" y2="170" stroke="#34A853" stroke-width="1.5" marker-end="url(#sa-g)" opacity=".8"/>
+          <path d="M469 64 L500 64" stroke="#1A73E8" stroke-width="2.5" stroke-dasharray="5,7" opacity=".9"><animate attributeName="stroke-dashoffset" from="50" to="0" dur="1.2s" repeatCount="indefinite"/></path>
+          <path d="M469 172 L500 172" stroke="#1877F2" stroke-width="2.5" stroke-dasharray="5,7" opacity=".9"><animate attributeName="stroke-dashoffset" from="50" to="0" dur="1.2s" repeatCount="indefinite"/></path>
+        </svg>
+      </div>
+      <div class="callout" style="margin-top:0;"><p><strong>In-Store Journey Key Points:</strong> The GCLID is almost never present at point of purchase — the customer saw an ad days or weeks earlier on a different device. <strong>Email capture at POS is the critical success factor.</strong> BigQuery performs the offline join: it looks up the email collected at till against historical GCLID/FBC records from website sessions. For Meta, upload the full five-parameter set within 62 days (ideally same day). For Google, the Enhanced Conversions for Leads API accepts email + phone even without a GCLID, matching against signed-in Google Accounts to reconstruct attribution.</p></div>
+    </div>
+
+    <!-- ── JOURNEY: CALL CENTRE ── -->
+    <div id="journey-call" class="journey-panel" style="display:none;">
+      <div style="background:var(--ink-2);padding:40px;overflow-x:auto;">
+        <svg viewBox="0 0 1040 310" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3',sans-serif" style="width:100%;min-width:760px;display:block;">
+          <defs>
+            <marker id="ca" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="rgba(255,255,255,.5)"/></marker>
+            <marker id="ca-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1A73E8"/></marker>
+            <marker id="ca-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1877F2"/></marker>
+            <marker id="ca-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#34A853"/></marker>
+          </defs>
+          <rect width="1040" height="310" fill="#0D1520"/>
+          <rect width="1040" height="310" fill="url(#jg)"/>
+
+          <text x="65"  y="18" fill="rgba(255,255,255,.3)" font-size="8" font-weight="700" letter-spacing="1.5" text-anchor="middle">AD EXPOSURE</text>
+          <text x="220" y="18" fill="rgba(255,255,255,.3)" font-size="8" font-weight="700" letter-spacing="1.5" text-anchor="middle">CALL TRIGGER</text>
+          <text x="400" y="18" fill="rgba(255,255,255,.3)" font-size="8" font-weight="700" letter-spacing="1.5" text-anchor="middle">CALL CENTRE SALE</text>
+          <text x="590" y="18" fill="rgba(255,255,255,.3)" font-size="8" font-weight="700" letter-spacing="1.5" text-anchor="middle">BIGQUERY MATCH</text>
+          <text x="790" y="18" fill="rgba(255,255,255,.3)" font-size="8" font-weight="700" letter-spacing="1.5" text-anchor="middle">PLATFORM UPLOAD</text>
+          <text x="970" y="18" fill="rgba(255,255,255,.3)" font-size="8" font-weight="700" letter-spacing="1.5" text-anchor="middle">ATTRIBUTION</text>
+
+          <!-- Google row -->
+          <rect x="8" y="32" width="114" height="66" rx="3" fill="#0D1F35" stroke="#1A73E8" stroke-width="1.5"/>
+          <text x="65" y="52" fill="#1A73E8" font-size="9" font-weight="700" text-anchor="middle">GOOGLE AD</text>
+          <text x="65" y="67" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Call extension</text>
+          <text x="65" y="80" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Call-only ad</text>
+          <text x="65" y="93" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Search + Display</text>
+
+          <rect x="153" y="32" width="130" height="66" rx="3" fill="#0D1F35" stroke="#1A73E8" stroke-width="1.5"/>
+          <text x="218" y="51" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">CALL FROM AD</text>
+          <text x="218" y="66" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Google Forwarding No.</text>
+          <text x="218" y="80" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Twilio dynamic no.</text>
+          <text x="218" y="93" fill="#FBBC04" font-size="7.5" font-weight="600" text-anchor="middle">GCLID captured in URL</text>
+
+          <rect x="315" y="32" width="154" height="66" rx="3" fill="#0D1F35" stroke="#34A853" stroke-width="2"/>
+          <text x="392" y="51" fill="#5DC878" font-size="8.5" font-weight="700" text-anchor="middle">AGENT COLLECTS</text>
+          <text x="392" y="66" fill="#5DC878" font-size="7.5" font-weight="700" text-anchor="middle">✓ email (mandatory)</text>
+          <text x="392" y="80" fill="#5DC878" font-size="7.5" font-weight="700" text-anchor="middle">✓ phone (caller ID + verify)</text>
+          <text x="392" y="93" fill="rgba(255,255,255,.4)" font-size="7.5" text-anchor="middle">CRM logged → GCS export</text>
+
+          <rect x="500" y="32" width="154" height="66" rx="3" fill="#071830" stroke="#1A73E8" stroke-width="2"/>
+          <text x="577" y="51" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">PHONE AS KEY</text>
+          <text x="577" y="66" fill="#5DC878" font-size="7.5" text-anchor="middle">phone (L2) → GCLID lookup</text>
+          <text x="577" y="80" fill="rgba(255,255,255,.4)" font-size="7.5" text-anchor="middle">email (L1) join if present</text>
+          <text x="577" y="93" fill="rgba(255,255,255,.4)" font-size="7.5" text-anchor="middle">address (L3) as fallback</text>
+
+          <rect x="686" y="32" width="186" height="66" rx="3" fill="#0D1F35" stroke="#1A73E8" stroke-width="1.5"/>
+          <text x="779" y="51" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">CALL CONVERSION UPLOAD</text>
+          <text x="779" y="66" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">GCLID + h(phone) + h(email)</text>
+          <text x="779" y="80" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">call_duration · outcome</text>
+          <text x="779" y="93" fill="#FBBC04" font-size="7.5" font-weight="600" text-anchor="middle">Upload within 72hrs</text>
+
+          <rect x="904" y="32" width="128" height="66" rx="3" fill="#0D2814" stroke="#34A853" stroke-width="1.5"/>
+          <text x="968" y="52" fill="#5DC878" font-size="8.5" font-weight="700" text-anchor="middle">✓ ATTRIBUTED</text>
+          <text x="968" y="67" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Keyword level credit</text>
+          <text x="968" y="80" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">CPA bidding update</text>
+          <text x="968" y="93" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">90-day lookback</text>
+
+          <!-- Meta row -->
+          <rect x="8" y="148" width="114" height="66" rx="3" fill="#0A1428" stroke="#1877F2" stroke-width="1.5"/>
+          <text x="65" y="168" fill="#1877F2" font-size="9" font-weight="700" text-anchor="middle">META AD</text>
+          <text x="65" y="183" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Lead Ad (phone)</text>
+          <text x="65" y="196" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Click-to-call</text>
+          <text x="65" y="209" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Retargeting campaign</text>
+
+          <rect x="153" y="148" width="130" height="66" rx="3" fill="#0A1428" stroke="#1877F2" stroke-width="1.5"/>
+          <text x="218" y="167" fill="#80B8FF" font-size="8.5" font-weight="700" text-anchor="middle">FBC + LEAD FORM</text>
+          <text x="218" y="182" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Meta Lead Ad captures</text>
+          <text x="218" y="196" fill="#5DC878" font-size="7.5" font-weight="700" text-anchor="middle">✓ email + phone</text>
+          <text x="218" y="209" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">FBC links to ad click</text>
+
+          <rect x="315" y="148" width="154" height="66" rx="3" fill="#0A1428" stroke="#34A853" stroke-width="2"/>
+          <text x="392" y="166" fill="#5DC878" font-size="8.5" font-weight="700" text-anchor="middle">CALL CLOSES SALE</text>
+          <text x="392" y="181" fill="#5DC878" font-size="7.5" font-weight="700" text-anchor="middle">✓ CRM record created</text>
+          <text x="392" y="196" fill="#5DC878" font-size="7.5" font-weight="700" text-anchor="middle">✓ email confirmed</text>
+          <text x="392" y="209" fill="rgba(255,255,255,.4)" font-size="7.5" text-anchor="middle">Revenue value logged</text>
+
+          <rect x="500" y="148" width="154" height="66" rx="3" fill="#071830" stroke="#1A73E8" stroke-width="2"/>
+          <text x="577" y="167" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">PHONE = L2 ANCHOR</text>
+          <text x="577" y="182" fill="#5DC878" font-size="7.5" text-anchor="middle">phone (L2) → FBC match</text>
+          <text x="577" y="196" fill="rgba(255,255,255,.4)" font-size="7.5" text-anchor="middle">email (L1) cross-check</text>
+          <text x="577" y="209" fill="rgba(255,255,255,.4)" font-size="7.5" text-anchor="middle">address (L3) supplemental</text>
+
+          <rect x="686" y="148" width="186" height="66" rx="3" fill="#0A1428" stroke="#1877F2" stroke-width="1.5"/>
+          <text x="779" y="166" fill="#80B8FF" font-size="8.5" font-weight="700" text-anchor="middle">META CAPI · LEAD EVENT</text>
+          <text x="779" y="181" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">h(email)+h(phone)+fn+ln+zip</text>
+          <text x="779" y="196" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">conversion_value · currency</text>
+          <text x="779" y="209" fill="#5DC878" font-size="7.5" font-weight="600" text-anchor="middle">28-day click · 1-day view</text>
+
+          <rect x="904" y="148" width="128" height="66" rx="3" fill="#0D2814" stroke="#34A853" stroke-width="1.5"/>
+          <text x="968" y="167" fill="#5DC878" font-size="8.5" font-weight="700" text-anchor="middle">✓ ATTRIBUTED</text>
+          <text x="968" y="182" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Lead Gen campaign</text>
+          <text x="968" y="196" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Cost per sale tracked</text>
+          <text x="968" y="209" fill="rgba(255,255,255,.5)" font-size="7.5" text-anchor="middle">Lookalike seed updated</text>
+
+          <!-- BQ badge -->
+          <rect x="498" y="122" width="158" height="22" rx="3" fill="rgba(26,115,232,.15)" stroke="rgba(26,115,232,.4)" stroke-width="1"/>
+          <text x="577" y="137" fill="#60A8FF" font-size="8.5" font-weight="700" text-anchor="middle">BIGQUERY · CRM BRIDGE</text>
+
+          <!-- Notes -->
+          <rect x="8" y="232" width="460" height="56" rx="3" fill="rgba(251,188,4,.07)" stroke="rgba(251,188,4,.25)" stroke-width="1"/>
+          <text x="20" y="250" fill="#FBBC04" font-size="8.5" font-weight="700">📞  CALL CENTRE IDENTITY CHALLENGE:</text>
+          <text x="20" y="265" fill="rgba(255,255,255,.55)" font-size="8">Phone number (Layer 2) is the primary stitching key for calls — email is ideal but often collected mid-call or not at all.</text>
+          <text x="20" y="279" fill="rgba(255,255,255,.55)" font-size="8">Google Forwarding Numbers / Twilio capture caller ANI (phone) — link this to GCLID from the click session.</text>
+
+          <rect x="492" y="232" width="460" height="56" rx="3" fill="rgba(52,168,83,.07)" stroke="rgba(52,168,83,.25)" stroke-width="1"/>
+          <text x="504" y="250" fill="#5DC878" font-size="8.5" font-weight="700">✓  BEST PRACTICE:</text>
+          <text x="504" y="265" fill="rgba(255,255,255,.55)" font-size="8">Train agents to confirm email + spell out for accuracy. Use dynamic phone numbers per campaign (Twilio/CallRail).</text>
+          <text x="504" y="279" fill="rgba(255,255,255,.55)" font-size="8">Pass caller phone to BigQuery in E.164 format. Use household address (L3) for high-value accounts without email.</text>
+
+          <!-- Flow arrows -->
+          <line x1="122" y1="65" x2="153" y2="65" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#ca-b)" opacity=".8"/>
+          <line x1="283" y1="65" x2="315" y2="65" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#ca-b)" opacity=".8"/>
+          <line x1="469" y1="65" x2="500" y2="65" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#ca-b)" opacity=".8"/>
+          <line x1="654" y1="65" x2="686" y2="65" stroke="#1A73E8" stroke-width="1.5" marker-end="url(#ca-b)" opacity=".8"/>
+          <line x1="872" y1="65" x2="904" y2="65" stroke="#34A853" stroke-width="1.5" marker-end="url(#ca-g)" opacity=".8"/>
+          <line x1="122" y1="181" x2="153" y2="181" stroke="#1877F2" stroke-width="1.5" marker-end="url(#ca-m)" opacity=".8"/>
+          <line x1="283" y1="181" x2="315" y2="181" stroke="#1877F2" stroke-width="1.5" marker-end="url(#ca-m)" opacity=".8"/>
+          <line x1="469" y1="181" x2="500" y2="181" stroke="#1877F2" stroke-width="1.5" marker-end="url(#ca-m)" opacity=".8"/>
+          <line x1="654" y1="181" x2="686" y2="181" stroke="#1877F2" stroke-width="1.5" marker-end="url(#ca-m)" opacity=".8"/>
+          <line x1="872" y1="181" x2="904" y2="181" stroke="#34A853" stroke-width="1.5" marker-end="url(#ca-g)" opacity=".8"/>
+          <path d="M469 67 L500 67" stroke="#1A73E8" stroke-width="2.5" stroke-dasharray="5,7" opacity=".9"><animate attributeName="stroke-dashoffset" from="50" to="0" dur="1.2s" repeatCount="indefinite"/></path>
+          <path d="M469 183 L500 183" stroke="#1877F2" stroke-width="2.5" stroke-dasharray="5,7" opacity=".9"><animate attributeName="stroke-dashoffset" from="50" to="0" dur="1.2s" repeatCount="indefinite"/></path>
+        </svg>
+      </div>
+      <div class="callout" style="margin-top:0;"><p><strong>Call Centre Journey Key Points:</strong> Phone number (Layer 2) becomes the primary stitching key when email isn't available at first contact. Google call extensions with Forwarding Numbers auto-link the call to the originating ad click. For Meta Lead Ads, the phone number captured in the lead form creates a direct FBC bridge to the call centre conversion. BigQuery joins the CRM sale record to the original ad session using the phone → GCLID/FBC lookup table. Household address (Layer 3) serves as a last-resort match for high-value enterprise or business accounts where standard consumer IDs aren't captured.</p></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ── PLATFORM COMPARISON TABLE ── -->
+    <div class="slabel">Platform Comparison</div>
+    <h2 class="sh2">Meta CAPI vs Google Enhanced Conversions <em>Side by Side</em></h2>
+    <div style="display:grid;grid-template-columns:220px 1fr 1fr;gap:2px;background:var(--border);">
+      <div style="background:var(--bg-2);padding:16px 20px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mid);"></div>
+      <div style="background:#0D1F35;padding:16px 20px;text-align:center;"><span style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1A73E8;">Google Enhanced Conversions</span></div>
+      <div style="background:#0A1428;padding:16px 20px;text-align:center;"><span style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1877F2;">Meta CAPI Offline</span></div>
+
+      <div style="background:var(--bg-2);padding:14px 20px;font-size:12px;font-weight:600;color:var(--ink);">Primary Match Key</div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;color:var(--mid);">GCLID (deterministic) + hashed email fallback</div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;color:var(--mid);">FBC/FBP click ID + hashed email (up to 5 params)</div>
+
+      <div style="background:var(--bg-2);padding:14px 20px;font-size:12px;font-weight:600;color:var(--ink);">Secondary Key (L2)</div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;color:var(--mid);">SHA-256 hashed phone number (E.164)</div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;color:var(--mid);">SHA-256 hashed phone number (multiple accepted)</div>
+
+      <div style="background:var(--bg-2);padding:14px 20px;font-size:12px;font-weight:600;color:var(--ink);">Tertiary Key (L3)</div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;color:var(--mid);">First name, last name, postal code, city, country</div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;color:var(--mid);">fn + ln + zip + city + country (all hashed separately)</div>
+
+      <div style="background:var(--bg-2);padding:14px 20px;font-size:12px;font-weight:600;color:var(--ink);">Attribution Window</div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;color:var(--mid);">90-day lookback (configurable)</div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;color:var(--mid);">28-day click / 1-day view (offline default)</div>
+
+      <div style="background:var(--bg-2);padding:14px 20px;font-size:12px;font-weight:600;color:var(--ink);">Upload Deadline</div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;"><span style="color:var(--amber);font-weight:600;">72 hours recommended</span><span style="color:var(--mid);"> (for bidding optimisation)</span></div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;"><span style="color:var(--amber);font-weight:600;">Same day recommended</span><span style="color:var(--mid);">, max 62 days</span></div>
+
+      <div style="background:var(--bg-2);padding:14px 20px;font-size:12px;font-weight:600;color:var(--ink);">Match Quality Signal</div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;color:var(--mid);">No explicit score — conversion volume is the signal</div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;color:var(--mid);">EMQ score: Poor / Okay / Good / Great (visible in Events Manager)</div>
+
+      <div style="background:var(--bg-2);padding:14px 20px;font-size:12px;font-weight:600;color:var(--ink);">Deduplication</div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;color:var(--mid);">order_id as dedup key; Google handles internally</div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;color:var(--mid);">7-day dedup window; event_id as dedup key</div>
+
+      <div style="background:var(--bg-2);padding:14px 20px;font-size:12px;font-weight:600;color:var(--ink);">Call Centre Signal</div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;color:var(--mid);">Google Forwarding Numbers + Call Duration import</div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;color:var(--mid);">CAPI Lead event with phone as primary identifier</div>
+
+      <div style="background:var(--bg-2);padding:14px 20px;font-size:12px;font-weight:600;color:var(--ink);">Typical Match Rate</div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;"><span style="color:var(--green);font-weight:700;">70–85%</span><span style="color:var(--mid);"> with GCLID + email</span></div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;"><span style="color:var(--green);font-weight:700;">60–80%</span><span style="color:var(--mid);"> with all 5 params (EMQ: Great)</span></div>
+
+      <div style="background:var(--bg-2);padding:14px 20px;font-size:12px;font-weight:600;color:var(--ink);">Optimisation Benefit</div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;color:var(--mid);">Smart Bidding (tCPA / tROAS) powered by offline signals; +10% median conv uplift</div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;color:var(--mid);">Advantage+ algorithm learns from offline events; +12% median conv uplift with 1P data</div>
+
+      <div style="background:var(--bg-2);padding:14px 20px;font-size:12px;font-weight:600;color:var(--ink);">Privacy Compliance</div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;color:var(--mid);">Customer Data Terms acceptance required; GDPR consent field in ClickConversion object</div>
+      <div style="background:var(--white);padding:14px 20px;font-size:12px;color:var(--mid);">Business Tools Terms; data_processing_options field required per event; PECR compliant</div>
+    </div>
+
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 function showTab(id, el) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -1296,6 +1847,16 @@ function showArchTab(id, el) {
   document.querySelectorAll('.arch-tab').forEach(t => t.classList.remove('active'));
   document.getElementById('arch-' + id).classList.add('active');
   el.classList.add('active');
+}
+function showJourney(id, el) {
+  document.querySelectorAll('.journey-panel').forEach(p => { p.style.display='none'; });
+  document.querySelectorAll('.journey-btn').forEach(b => {
+    b.style.background='var(--white)';
+    b.querySelectorAll('div').forEach(d=>{ d.style.color='var(--mid)'; });
+  });
+  document.getElementById('journey-'+id).style.display='block';
+  el.style.background='var(--bain-red)';
+  el.querySelectorAll('div').forEach(d=>{ d.style.color='#fff'; });
 }
 function toggleAcc(hdr) {
   const body = hdr.nextElementSibling;
@@ -1311,8 +1872,10 @@ const obs = new IntersectionObserver(entries => {
     if (e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; }
   });
 }, {threshold: 0.08});
-document.querySelectorAll('.dp-card,.sec-card,.obj-card,.prereq-body,.hstat').forEach(el => {
-  el.style.opacity='0'; el.style.transform='translateY(16px)'; el.style.transition='opacity .5s ease,transform .5s ease';
+document.querySelectorAll('.dp-card,.prereq-item,.sec-card,.obj-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(16px)';
+  el.style.transition = 'opacity .5s ease, transform .5s ease';
   obs.observe(el);
 });
 </script>
